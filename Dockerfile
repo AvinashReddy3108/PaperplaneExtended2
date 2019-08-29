@@ -9,6 +9,7 @@ RUN sed -e 's;^#http\(.*\)/v3.9/community;http\1/v3.9/community;g' -i /etc/apk/r
 # Installing Python
 RUN apk add --no-cache --update \
     bash \
+    aria2 \
     build-base \
     bzip2-dev \
     curl \
