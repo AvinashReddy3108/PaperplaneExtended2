@@ -1,5 +1,6 @@
 aiohttp
 async_generator
+aria2p
 bs4
 cowpy
 cryptg
