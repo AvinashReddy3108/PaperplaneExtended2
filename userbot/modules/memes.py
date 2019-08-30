@@ -566,12 +566,11 @@ async def univsaye(cowmsg):
 @register(outgoing=True, pattern="^:/$")
 @errors_handler
 async def kek(keks):
-    if not keks.text[0].isalpha() and keks.text[0] not in ("/", "#", "@", "!"):
-        """ Check yourself ;)"""
-        uio = ["/", "\\"]
-        for i in range(1, 15):
-            time.sleep(0.3)
-            await keks.edit(":" + uio[i % 2])
+    """ Check yourself ;)"""
+    uio = ["/", "\\"]
+    for i in range(1, 15):
+        time.sleep(0.3)
+        await keks.edit(":" + uio[i % 2])
 
 
 @register(outgoing=True, pattern=r"^.coinflip (.*)")
@@ -686,12 +685,11 @@ async def slap(replied_user, event):
 @register(outgoing=True, pattern="^-_-$")
 @errors_handler
 async def lol(lel):
-    if not lel.text[0].isalpha() and lel.text[0] not in ("/", "#", "@", "!"):
-        """ Ok... """
-        okay = "-_-"
-        for _ in range(10):
-            okay = okay[:-1] + "_-"
-            await lel.edit(okay)
+    """ Ok... """
+    okay = "-_-"
+    for i in range(10):
+        okay = okay[:-1] + "_-"
+        await lel.edit(okay)
 
 
 @register(outgoing=True, pattern="^.decide(?: |$)(.*)")
@@ -726,11 +724,17 @@ async def decide(event):
 @register(outgoing=True, pattern="^;_;$")
 @errors_handler
 async def fun(e):
+    t = ";__;"
+    for j in range(10):
+        t = t[:-1] + "_;"
+        await e.edit(t)
+
+
+@register(outgoing=True, pattern="^.fp$")
+@errors_handler
+async def facepalm(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
-        t = ";__;"
-        for j in range(10):
-            t = t[:-1] + "_;"
-            await e.edit(t)
+        await e.edit("🤦‍♂")
 
 
 @register(outgoing=True, pattern="^.cry$")
@@ -947,14 +951,13 @@ async def metoo(hahayes):
         await hahayes.edit(random.choice(METOOSTR))
 
 
-@register(outgoing=True, pattern="^.oof$")
+@register(outgoing=True, pattern="^Oof$")
 @errors_handler
 async def Oof(e):
-    if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
-        t = "Oof"
-        for j in range(15):
-            t = t[:-1] + "of"
-            await e.edit(t)
+    t = "Oof"
+    for j in range(15):
+        t = t[:-1] + "of"
+        await e.edit(t)
 
 
 @register(outgoing=True, pattern="^.10iq$")
@@ -1166,8 +1169,10 @@ CMD_HELP.update({
 \nUsage: You retard !!\
 \n\n.zal\
 \nUsage: Invoke the feeling of chaos.\
-\n\n.oof\
+\n\nOof\
 \nUsage: Ooooof\
+\n\n.fp\
+\nUsage: Facepalm :P\
 \n\n.moon\
 \nUsage: kensar moon animation.\
 \n\n.clock\
