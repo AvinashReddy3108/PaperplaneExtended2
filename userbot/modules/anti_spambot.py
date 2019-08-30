@@ -133,10 +133,6 @@ async def ANTI_SPAMBOT(welcm):
                     continue  # Check the next messsage
 
             if spambot:
-                await welcm.reply(
-                    "`Potential Spambot Detected! Kicking away! "
-                    "Will log the ID for further purposes!\n"
-                    f"USER:` [{check_user.first_name}](tg://user?id={check_user.id})")
 
                 chat = await welcm.get_chat()
                 admin = chat.admin_rights
@@ -150,16 +146,24 @@ async def ANTI_SPAMBOT(welcm):
                             f"REASON: {reason}"
                         )
                         kicked = False
+                        reported = True
                 else:
                     try:
-                        await welcm.client(
-                            EditBannedRequest(
-                                welcm.chat_id,
-                                check_user.id,
-                                KICK_RIGHTS
-                            )
+
+                    await welcm.reply(
+                        "`Potential Spambot Detected! Kicking away! "
+                        "Will log the ID for further purposes!\n"
+                        f"USER:` [{check_user.first_name}](tg://user?id={check_user.id})")
+
+                    await welcm.client(
+                        EditBannedRequest(
+                            welcm.chat_id,
+                            check_user.id,
+                            KICK_RIGHTS
                         )
-                        kicked = True
+                    )
+                    kicked = True
+                    reported = False
 
                     except BaseException:
                         if ANTI_SPAMBOT_SHOUT:
@@ -170,9 +174,10 @@ async def ANTI_SPAMBOT(welcm):
                                 f"REASON: {reason}"
                             )
                             kicked = False
+                            reported = True
 
                 if BOTLOG:
-                    if kicked:
+                    if kicked or reported:
                         await welcm.client.send_message(
                             BOTLOG_CHATID,
                             "#ANTI_SPAMBOT REPORT\n"
