@@ -24,7 +24,8 @@ from userbot.events import register, errors_handler
 @errors_handler
 async def randomise(items):
     """ For .random command, get a random item from the list of items. """
-    if not items.text[0].isalpha() and items.text[0] not in ("/", "#", "@", "!"):
+    if not items.text[0].isalpha() and items.text[0] not in (
+            "/", "#", "@", "!"):
         itemo = (items.text[8:]).split()
         index = randint(1, len(itemo) - 1)
         await items.edit("**Query: **\n`" + items.text[8:] + "`\n**Output: **\n`" + itemo[index] + "`")
@@ -54,7 +55,8 @@ async def sleepybot(time):
 @errors_handler
 async def killdabot(event):
     """ For .shutdown command, shut the bot down."""
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         await event.edit("`Goodbye *Windows XP shutdown sound*....`")
         if BOTLOG:
             await event.client.send_message(
@@ -67,7 +69,8 @@ async def killdabot(event):
 @register(outgoing=True, pattern="^.restart$")
 @errors_handler
 async def killdabot(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         await event.edit("`BRB... *PornHub intro*`")
         if BOTLOG:
             await event.client.send_message(
@@ -85,9 +88,10 @@ async def killdabot(event):
 @errors_handler
 async def bot_community(community):
     """ For .support command, just returns the group link. """
-    if not community.text[0].isalpha() and community.text[0] not in ("/", "#", "@", "!"):
-        await community.edit("Join RaphielGang's awesome userbot community: @userbot_support"\
-                             "\nDo note that Paperplane Extended is an unoficial fork of their "\
+    if not community.text[0].isalpha(
+    ) and community.text[0] not in ("/", "#", "@", "!"):
+        await community.edit("Join RaphielGang's awesome userbot community: @userbot_support"
+                             "\nDo note that Paperplane Extended is an unoficial fork of their "
                              "Paperplane project and it may get limited or no support for bugs.")
 
 
@@ -95,7 +99,8 @@ async def bot_community(community):
 @errors_handler
 async def bot_support(wannahelp):
     """ For .support command, just returns the group link. """
-    if not wannahelp.text[0].isalpha() and wannahelp.text[0] not in ("/", "#", "@", "!"):
+    if not wannahelp.text[0].isalpha(
+    ) and wannahelp.text[0] not in ("/", "#", "@", "!"):
         await wannahelp.edit("Join the Paperplane Extended Channel: @PaperplaneExtended")
 
 
@@ -110,10 +115,10 @@ async def creator(e):
 @errors_handler
 async def reedme(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
-        await e.edit("Here's something for you to read:\n"\
-                     "\n[Paperplane Extended's README.md file](https://github.com/AvinashReddy3108/PaperplaneExtended/blob/sql-extended/README.md)"\
-                     "\n[Setup Guide - Basic](https://telegra.ph/How-to-host-a-Telegram-Userbot-07-24)"\
-                     "\n[Setup Guide - Google Drive](https://telegra.ph/How-To-Setup-GDrive-07-27)"\
+        await e.edit("Here's something for you to read:\n"
+                     "\n[Paperplane Extended's README.md file](https://github.com/AvinashReddy3108/PaperplaneExtended/blob/sql-extended/README.md)"
+                     "\n[Setup Guide - Basic](https://telegra.ph/How-to-host-a-Telegram-Userbot-07-24)"
+                     "\n[Setup Guide - Google Drive](https://telegra.ph/How-To-Setup-GDrive-07-27)"
                      "\n[Setup Guide - LastFM Module](https://telegra.ph/How-to-set-up-LastFM-module-for-Paperplane-userbot-08-10)")
 
 
@@ -128,7 +133,7 @@ async def repeat(rep):
 
         replyText = toBeRepeated + "\n"
 
-        for i in range(0, replyCount-1):
+        for i in range(0, replyCount - 1):
             replyText += toBeRepeated + "\n"
 
         await rep.edit(replyText)
@@ -138,13 +143,16 @@ async def repeat(rep):
 @errors_handler
 async def repo_is_here(wannasee):
     """ For .repo command, just returns the repo URL. """
-    if not wannasee.text[0].isalpha() and wannasee.text[0] not in ("/", "#", "@", "!"):
+    if not wannasee.text[0].isalpha(
+    ) and wannasee.text[0] not in ("/", "#", "@", "!"):
         await wannasee.edit("Click [here](https://github.com/AvinashReddy3108/PaperplaneExtended) to open Paperplane Extended's GitHub page.")
+
 
 @register(outgoing=True, pattern="^.json$")
 @errors_handler
 async def json(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         the_real_message = None
         reply_to_id = None
         if event.reply_to_msg_id:
@@ -154,7 +162,7 @@ async def json(event):
         else:
             the_real_message = event.stringify()
             reply_to_id = event.message.id
-            
+
         with io.BytesIO(str.encode(the_real_message)) as out_file:
             out_file.name = "message.json"
             await event.client.send_file(
@@ -163,7 +171,7 @@ async def json(event):
                 force_document=True,
                 allow_cache=False,
                 reply_to=reply_to_id,
-                caption = "`Here's the decoded message data !!`"
+                caption="`Here's the decoded message data !!`"
             )
             await event.delete()
 

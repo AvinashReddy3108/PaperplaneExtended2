@@ -71,7 +71,8 @@ async def parseqr(qr_e):
 @errors_handler
 async def barcode(event):
     """ For .barcode command, genrate a barcode containing the given content. """
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         await event.edit("...")
         start = datetime.now()
         input_str = event.pattern_match.group(1)
@@ -101,7 +102,8 @@ async def barcode(event):
 
         bar_code_type = "code128"
         try:
-            bar_code_mode_f = barcode.get(bar_code_type, message, writer=ImageWriter())
+            bar_code_mode_f = barcode.get(
+                bar_code_type, message, writer=ImageWriter())
             filename = bar_code_mode_f.save(bar_code_type)
             await event.client.send_file(
                 event.chat_id,

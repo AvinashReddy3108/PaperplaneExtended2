@@ -77,6 +77,7 @@ UNMUTE_RIGHTS = ChatBannedRights(
 )
 # ================================================
 
+
 @register(outgoing=True, pattern="^.setgrouppic$")
 @errors_handler
 async def set_group_photo(gpic):
@@ -103,8 +104,8 @@ async def set_group_photo(gpic):
         if photo:
             try:
                 await gpic.client(EditPhotoRequest(
-                gpic.chat_id,
-                await gpic.client.upload_file(photo)
+                    gpic.chat_id,
+                    await gpic.client.upload_file(photo)
                 ))
                 await gpic.edit(CHAT_PP_CHANGED)
 
@@ -255,7 +256,6 @@ async def ban(bon):
         else:
             return
 
-
         # Announce that we're going to whack the pest
         await bon.edit("`Whacking the pest!`")
 
@@ -284,7 +284,8 @@ async def ban(bon):
 
         await bon.edit("`{}` was banned!".format(str(user.id)))
 
-        # Announce to the logging group if we have banned the person successfully!
+        # Announce to the logging group if we have banned the person
+        # successfully!
         if BOTLOG:
             await bon.client.send_message(
                 BOTLOG_CHATID,
@@ -372,9 +373,8 @@ async def spider(spdr):
         self_user = await spdr.client.get_me()
 
         if user.id == self_user.id:
-        	await spdr.edit("`Hands too short, can't duct tape myself...\n(ヘ･_･)ヘ┳━┳`")
-        	return
-
+            await spdr.edit("`Hands too short, can't duct tape myself...\n(ヘ･_･)ヘ┳━┳`")
+            return
 
         # If everything goes well, do announcing and mute
         await spdr.edit("`Gets a tape!`")
@@ -549,7 +549,8 @@ async def ungmoot(un_gmute):
 @errors_handler
 async def gspider(gspdr):
     """ For .gmute command, globally mutes the replied/tagged person """
-    if not gspdr.text[0].isalpha() and gspdr.text[0] not in ("/", "#", "@", "!"):
+    if not gspdr.text[0].isalpha() and gspdr.text[0] not in (
+            "/", "#", "@", "!"):
         # Admin or creator check
         chat = await gspdr.get_chat()
         admin = chat.admin_rights
@@ -572,7 +573,6 @@ async def gspider(gspdr):
             pass
         else:
             return
-
 
         # If pass, inform and start gmuting
         await gspdr.edit("`Grabs a huge, sticky duct tape!`")
@@ -666,7 +666,7 @@ async def rm_deletedacc(show):
             \n**{del_a}** deleted admin accounts are not removed"
 
         await show.edit(del_status)
-        
+
         if BOTLOG:
             await show.client.send_message(
                 BOTLOG_CHATID,
@@ -769,7 +769,6 @@ async def kick(usr):
             await usr.edit("`Couldn't fetch user.`")
             return
 
-
         await usr.edit("`Kicking...`")
 
         try:
@@ -864,7 +863,9 @@ async def get_user_from_event(event):
         if event.message.entities is not None:
             probable_user_mention_entity = event.message.entities[0]
 
-            if isinstance(probable_user_mention_entity, MessageEntityMentionName):
+            if isinstance(
+                    probable_user_mention_entity,
+                    MessageEntityMentionName):
                 user_id = probable_user_mention_entity.user_id
                 user_obj = await event.client.get_entity(user_id)
                 return user_obj
@@ -875,6 +876,7 @@ async def get_user_from_event(event):
             return None
 
     return user_obj
+
 
 async def get_user_from_id(user, event):
     if isinstance(user, str):

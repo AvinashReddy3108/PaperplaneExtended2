@@ -32,11 +32,15 @@ async def capture(url):
             chrome_options.add_argument("--disable-dev-shm-usage")
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument('--disable-gpu')
-            driver = webdriver.Chrome(executable_path=CHROME_DRIVER, options=chrome_options)
+            driver = webdriver.Chrome(
+                executable_path=CHROME_DRIVER,
+                options=chrome_options)
             input_str = url.pattern_match.group(1)
             driver.get(input_str)
-            height = driver.execute_script("return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);")
-            width = driver.execute_script("return Math.max(document.body.scrollWidth, document.body.offsetWidth, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth);")
+            height = driver.execute_script(
+                "return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);")
+            width = driver.execute_script(
+                "return Math.max(document.body.scrollWidth, document.body.offsetWidth, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth);")
             driver.set_window_size(width + 125, height + 125)
             await url.edit("`Generating screenshot of the page...`")
             await sleep(5)

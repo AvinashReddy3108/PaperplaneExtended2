@@ -20,13 +20,14 @@ from userbot.events import register, errors_handler
 @register(pattern=".whois(?: |$)(.*)", outgoing=True)
 @errors_handler
 async def who(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         """ For .whois command, get info about a user. """
         if event.fwd_from:
             return
 
         await event.edit("`Sit tight while I steal some data from Mark Zuckerburg...`")
-        
+
         if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
             os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
 
@@ -57,6 +58,7 @@ async def who(event):
         except TypeError:
             await event.edit(caption, parse_mode="html")
 
+
 async def get_user(event):
     """ Get the user from argument or replied message. """
     if event.reply_to_msg_id:
@@ -75,7 +77,9 @@ async def get_user(event):
         if event.message.entities is not None:
             probable_user_mention_entity = event.message.entities[0]
 
-            if isinstance(probable_user_mention_entity, MessageEntityMentionName):
+            if isinstance(
+                    probable_user_mention_entity,
+                    MessageEntityMentionName):
                 user_id = probable_user_mention_entity.user_id
                 replied_user = await event.client(GetFullUserRequest(user_id))
                 return replied_user
@@ -87,6 +91,7 @@ async def get_user(event):
             return None
 
     return replied_user
+
 
 async def fetch_info(replied_user, event):
     """ Get details from the User object. """
@@ -127,7 +132,7 @@ async def fetch_info(replied_user, event):
     username = "@{}".format(username) if username else (
         "This User has no Username")
     user_bio = "This User has no About" if not user_bio else user_bio
-    
+
     caption = "<b>USER INFO:</b>\n\n"
     caption += f"First Name: {first_name}\n"
     caption += f"Last Name: {last_name}\n"

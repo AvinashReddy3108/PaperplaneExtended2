@@ -72,7 +72,8 @@ async def separate_sed(sed_string):
 @register(outgoing=True, pattern="^.s")
 @errors_handler
 async def sed(command):
-    if not command.text[0].isalpha() and command.text[0] not in ("/", "#", "@", "!"):
+    if not command.text[0].isalpha() and command.text[0] not in (
+            "/", "#", "@", "!"):
         """ For sed command, use sed on Telegram. """
         sed_result = await separate_sed(command.text)
         textx = await command.get_reply_message()
@@ -105,7 +106,7 @@ async def sed(command):
                     text = re.sub(repl, repl_with, to_fix, flags=re.I).strip()
                 elif "i" in flags:
                     text = re.sub(repl, repl_with, to_fix,
-                                count=1, flags=re.I).strip()
+                                  count=1, flags=re.I).strip()
                 elif "g" in flags:
                     text = re.sub(repl, repl_with, to_fix).strip()
                 else:

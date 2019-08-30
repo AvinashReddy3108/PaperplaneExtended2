@@ -15,6 +15,7 @@ TYPE_TEXT = 0
 TYPE_PHOTO = 1
 TYPE_DOCUMENT = 2
 
+
 @register(outgoing=True, pattern="^.notes$")
 @errors_handler
 async def notes_active(svd):
@@ -89,7 +90,13 @@ async def add_filter(fltr):
 
         success = "`Note {} successfully. Use` #{} `to get it`"
 
-        if add_note(str(fltr.chat_id), notename, snip['text'], snip['type'], snip.get('id'), snip.get('hash'), snip.get('fr')) is False:
+        if add_note(str(fltr.chat_id),
+                    notename,
+                    snip['text'],
+                    snip['type'],
+                    snip.get('id'),
+                    snip.get('hash'),
+                    snip.get('fr')) is False:
             return await fltr.edit(success.format('updated', notename))
         else:
             return await fltr.edit(success.format('added', notename))
@@ -117,10 +124,10 @@ async def incom_note(getnt):
                         )
                     elif note.snip_type == TYPE_DOCUMENT:
                         media = types.InputDocument(
-                        int(note.media_id),
-                        int(note.media_access_hash),
-                        note.media_file_reference
-                    )
+                            int(note.media_id),
+                            int(note.media_access_hash),
+                            note.media_file_reference
+                        )
                     else:
                         media = None
                     message_id = getnt.message.id
@@ -134,6 +141,7 @@ async def incom_note(getnt):
                     )
     except AttributeError:
         pass
+
 
 @register(outgoing=True, pattern="^.rmnotes (.*)")
 @errors_handler

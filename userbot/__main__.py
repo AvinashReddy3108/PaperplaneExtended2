@@ -31,8 +31,9 @@ for module_name in ALL_MODULES:
 
 LOGS.info("Your userbot version is 4.0 - Extended")
 
-LOGS.info("Congratulations, your userbot is now running !! Test it by typing .alive in any chat."
-          "If you need assistance, head to https://t.me/PaperplaneExtendedChat")
+LOGS.info(
+    "Congratulations, your userbot is now running !! Test it by typing .alive in any chat."
+    "If you need assistance, head to https://t.me/PaperplaneExtendedChat")
 
 
 if len(argv) not in (1, 3, 4):

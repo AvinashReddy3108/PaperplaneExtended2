@@ -31,7 +31,7 @@ async def ANTI_SPAMBOT(welcm):
             adder = None
             ignore = False
             users = None
-            
+
             if welcm.user_added:
                 ignore = False
                 adder = welcm.action_message.from_id
@@ -43,17 +43,17 @@ async def ANTI_SPAMBOT(welcm):
 
             if ignore:
                 return
-            
+
             elif welcm.user_joined:
                 users_list = hasattr(welcm.action_message.action, "users")
                 if users_list:
                     users = welcm.action_message.action.users
                 else:
                     users = [welcm.action_message.from_id]
-                    
+
             await sleep(5)
             spambot = False
-            
+
             if not users:
                 return
 
@@ -76,18 +76,21 @@ async def ANTI_SPAMBOT(welcm):
                     check_user = await welcm.client.get_entity(user_id)
 
                     # DEBUGGING. LEAVING IT HERE FOR SOME TIME ###
-                    print(f"User Joined: {check_user.first_name} [ID: {check_user.id}]")
+                    print(
+                        f"User Joined: {check_user.first_name} [ID: {check_user.id}]")
                     print(f"Chat: {welcm.chat.title}")
                     print(f"Time: {join_time}")
-                    print(f"Message Sent: {message.text}\n\n[Time: {message_date}]")
+                    print(
+                        f"Message Sent: {message.text}\n\n[Time: {message_date}]")
                     ##############################################
 
                     try:
                         cas_url = f"https://combot.org/api/cas/check?user_id={check_user.id}"
-                        r = get(cas_url, timeout = 3)
+                        r = get(cas_url, timeout=3)
                         data = r.json()
-                    except:
-                        print("CAS check failed, falling back to legacy anti_spambot behaviour.")
+                    except BaseException:
+                        print(
+                            "CAS check failed, falling back to legacy anti_spambot behaviour.")
                         data = None
                         pass
 

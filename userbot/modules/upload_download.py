@@ -27,7 +27,7 @@ from userbot import LOGS, CMD_HELP, TEMP_DOWNLOAD_DIRECTORY
 from userbot.events import register, errors_handler
 
 
-async def progress(current, total, event, start, type_of_ps, file_name = None):
+async def progress(current, total, event, start, type_of_ps, file_name=None):
     """Generic progress_callback for both
     upload.py and download.py"""
     now = time.time()
@@ -60,6 +60,7 @@ async def progress(current, total, event, start, type_of_ps, file_name = None):
                 tmp
             ))
 
+
 def humanbytes(size):
     """Input size in bytes,
     outputs in a human readable format"""
@@ -81,6 +82,7 @@ def humanbytes(size):
         raised_to_pow += 1
     return str(round(size, 2)) + " " + dict_power_n[raised_to_pow] + "B"
 
+
 def time_formatter(milliseconds: int) -> str:
     """Inputs time in milliseconds, to get beautified time,
     as string"""
@@ -100,7 +102,8 @@ def time_formatter(milliseconds: int) -> str:
 @errors_handler
 async def download(target_file):
     """ For .download command, download files to the userbot's server. """
-    if not target_file.text[0].isalpha() and target_file.text[0] not in ("/", "#", "@", "!"):
+    if not target_file.text[0].isalpha(
+    ) and target_file.text[0] not in ("/", "#", "@", "!"):
         if target_file.fwd_from:
             return
         await target_file.edit("Processing ...")
@@ -115,7 +118,10 @@ async def download(target_file):
             file_name = file_name.strip()
             head, tail = os.path.split(file_name)
             if head:
-                if not os.path.isdir(os.path.join(TEMP_DOWNLOAD_DIRECTORY, head)):
+                if not os.path.isdir(
+                    os.path.join(
+                        TEMP_DOWNLOAD_DIRECTORY,
+                        head)):
                     os.makedirs(os.path.join(TEMP_DOWNLOAD_DIRECTORY, head))
                     file_name = os.path.join(head, tail)
             downloaded_file_name = TEMP_DOWNLOAD_DIRECTORY + "" + file_name
@@ -129,7 +135,7 @@ async def download(target_file):
                 downloaded = downloader.get_dl_size()
                 now = time.time()
                 diff = now - c_time
-                percentage = downloader.get_progress()*100
+                percentage = downloader.get_progress() * 100
                 speed = downloader.get_speed()
                 elapsed_time = round(diff) * 1000
                 progress_str = "[{0}{1}]\nProgress: {2}%".format(
@@ -168,7 +174,7 @@ async def download(target_file):
                         progress(d, t, target_file, c_time, "Downloading...")
                     )
                 )
-            except Exception as e: # pylint:disable=C0103,W0703
+            except Exception as e:  # pylint:disable=C0103,W0703
                 await target_file.edit(str(e))
             else:
                 end = datetime.now()
@@ -185,7 +191,8 @@ async def download(target_file):
 @errors_handler
 async def uploadir(udir_event):
     """ For .uploadir command, allows you to upload everything from a folder in the server"""
-    if not udir_event.text[0].isalpha() and udir_event.text[0] not in ("/", "#", "@", "!"):
+    if not udir_event.text[0].isalpha(
+    ) and udir_event.text[0] not in ("/", "#", "@", "!"):
         if udir_event.fwd_from:
             return
         input_str = udir_event.pattern_match.group(1)
@@ -269,7 +276,8 @@ async def uploadir(udir_event):
 @errors_handler
 async def upload(u_event):
     """ For .upload command, allows you to upload a file from the userbot's server """
-    if not u_event.text[0].isalpha() and u_event.text[0] not in ("/", "#", "@", "!"):
+    if not u_event.text[0].isalpha() and u_event.text[0] not in (
+            "/", "#", "@", "!"):
         if u_event.fwd_from:
             return
         if u_event.is_channel and not u_event.is_group:
@@ -357,7 +365,8 @@ def extract_w_h(file):
 @errors_handler
 async def uploadas(uas_event):
     """ For .uploadas command, allows you to specify some arguments for upload. """
-    if not uas_event.text[0].isalpha() and uas_event.text[0] not in ("/", "#", "@", "!"):
+    if not uas_event.text[0].isalpha(
+    ) and uas_event.text[0] not in ("/", "#", "@", "!"):
         if uas_event.fwd_from:
             return
         await uas_event.edit("Processing ...")

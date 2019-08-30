@@ -15,16 +15,18 @@ class GBan(BASE):
 
 GBan.__table__.create(checkfirst=True)
 
+
 def get_gban():
     try:
         return SESSION.query(GBan)
     finally:
         SESSION.close()
 
+
 def is_gban(chat_id):
     try:
         return SESSION.query(GBan).filter(GBan.chat_id == int(chat_id)).one()
-    except:
+    except BaseException:
         return None
     finally:
         SESSION.close()

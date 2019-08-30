@@ -15,16 +15,18 @@ class FBan(BASE):
 
 FBan.__table__.create(checkfirst=True)
 
+
 def get_fban():
     try:
         return SESSION.query(FBan)
     finally:
         SESSION.close()
 
+
 def is_fban(chat_id):
     try:
         return SESSION.query(FBan).filter(FBan.chat_id == int(chat_id)).one()
-    except:
+    except BaseException:
         return None
     finally:
         SESSION.close()

@@ -42,12 +42,12 @@ async def on_snip(event):
             )
         else:
             media = None
-            
+
         message_id_to_reply = event.message.reply_to_msg_id
-        
+
         if not message_id_to_reply:
             message_id_to_reply = None
-            
+
         await event.client.send_message(
             event.chat_id,
             snip.reply,
@@ -85,10 +85,16 @@ async def on_snip_save(event):
                 snip['id'] = media.id
                 snip['hash'] = media.access_hash
                 snip['fr'] = media.file_reference
-                
+
         success = "`Snip {} successfully. Use` **${}** `anywhere to get it`"
-        
-        if add_snip(name, snip['text'], snip['type'], snip.get('id'), snip.get('hash'), snip.get('fr')) is False:
+
+        if add_snip(
+                name,
+                snip['text'],
+                snip['type'],
+                snip.get('id'),
+                snip.get('hash'),
+                snip.get('fr')) is False:
             await event.edit(success.format('updated', name))
         else:
             await event.edit(success.format('saved', name))
@@ -98,7 +104,8 @@ async def on_snip_save(event):
 @errors_handler
 async def on_snip_list(event):
     """ For .snips command, lists snips saved by you. """
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         try:
             from userbot.modules.sql_helper.snips_sql import get_snips
         except AttributeError:
@@ -113,7 +120,7 @@ async def on_snip_list(event):
                 message += f"- `${a_snip.snip}`\n"
             else:
                 message += f"- `${a_snip.snip}`\n"
-    
+
         await event.edit(message)
 
 
@@ -131,7 +138,7 @@ async def on_snip_delete(event):
         await event.edit(f"`Successfully deleted snip:` **{name}**")
     else:
         await event.edit(f"`Couldn't find snip:` **{name}**")
-    
+
 CMD_HELP.update({
     "snips": "\
 $<snip_name>\

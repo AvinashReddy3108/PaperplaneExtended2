@@ -47,7 +47,8 @@ async def sysdetails(sysd):
 @errors_handler
 async def bot_ver(event):
     """ For .botver command, get the bot version. """
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         if which("git") is not None:
             invokever = "git describe --all --long"
             ver = await asyncrunapp(
@@ -136,7 +137,8 @@ async def pipcheck(pip):
 @errors_handler
 async def amireallyalive(alive):
     """ For .alive command, check if the bot is running.  """
-    if not alive.text[0].isalpha() and alive.text[0] not in ("/", "#", "@", "!"):
+    if not alive.text[0].isalpha() and alive.text[0] not in (
+            "/", "#", "@", "!"):
         await alive.edit(
             "`"
             "My bot is running \n\n"
@@ -144,14 +146,15 @@ async def amireallyalive(alive):
             f"Python: {python_version()} \n"
             f"User: {DEFAULTUSER}"
             "`"
-            )
+        )
 
 
 @register(outgoing=True, pattern="^.aliveu")
 @errors_handler
 async def amireallyaliveuser(username):
     """ For .aliveu command, change the username in the .alive command. """
-    if not username.text[0].isalpha() and username.text[0] not in ("/", "#", "@", "!"):
+    if not username.text[0].isalpha(
+    ) and username.text[0] not in ("/", "#", "@", "!"):
         message = username.text
         output = '.aliveu [new user without brackets] nor can it be empty'
         if not (message == '.aliveu' or message[7:8] != ' '):
@@ -170,7 +173,8 @@ async def amireallyaliveuser(username):
 @errors_handler
 async def amireallyalivereset(ureset):
     """ For .resetalive command, reset the username in the .alive command. """
-    if not ureset.text[0].isalpha() and ureset.text[0] not in ("/", "#", "@", "!"):
+    if not ureset.text[0].isalpha() and ureset.text[0] not in (
+            "/", "#", "@", "!"):
         global DEFAULTUSER
         DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else uname().node
         await ureset.edit(

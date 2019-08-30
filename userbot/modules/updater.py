@@ -16,12 +16,14 @@ from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
 from userbot import CMD_HELP
 from userbot.events import register, errors_handler
 
+
 async def gen_chlog(repo, diff):
     ch_log = ''
     d_form = "%d/%m/%y"
     for c in repo.iter_commits(diff):
         ch_log += f'•[{c.committed_datetime.strftime(d_form)}]: {c.summary} <{c.author}>\n'
     return ch_log
+
 
 async def is_off_br(br):
     off_br = ['sql-extended', 'sql-dirty']
@@ -30,12 +32,13 @@ async def is_off_br(br):
             return 1
     return
 
+
 @register(outgoing=True, pattern="^.update(?: |$)(.*)")
 @errors_handler
 async def upstream(ups):
     "For .update command, check if the bot is up to date, update if specified"
     if not ups.text[0].isalpha() and ups.text[0] not in (
-        "/", "#", "@", "!"):
+            "/", "#", "@", "!"):
         await ups.edit("`Checking for updates, please wait....`")
         conf = ups.pattern_match.group(1)
         off_repo = 'https://github.com/AvinashReddy3108/PaperplaneExtended.git'
@@ -95,7 +98,7 @@ async def upstream(ups):
 
         await ups.edit('`New update found, updating...`')
         ups_rem.fetch(ac_br)
-        ups_rem.git.reset('--hard','FETCH_HEAD')
+        ups_rem.git.reset('--hard', 'FETCH_HEAD')
         await ups.edit(
             '`Successfully Updated!\n'
             'Bot is restarting... Wait for a second!`'
@@ -105,7 +108,6 @@ async def upstream(ups):
         execl(sys.executable, sys.executable, *sys.argv)
         # Shut the existing one down
         exit()
-
 
 
 CMD_HELP.update({

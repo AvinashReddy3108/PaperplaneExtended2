@@ -16,6 +16,7 @@ TYPE_TEXT = 0
 TYPE_PHOTO = 1
 TYPE_DOCUMENT = 2
 
+
 @register(incoming=True, disable_edited=True)
 @errors_handler
 async def filter_incoming_handler(handler):
@@ -31,9 +32,10 @@ async def filter_incoming_handler(handler):
             name = handler.raw_text
             filters = get_filters(handler.chat_id)
             if not filters:
-                    return
+                return
             for trigger in filters:
-                pattern = r"( |^|[^\w])" + escape(trigger.keyword) + r"( |$|[^\w])"
+                pattern = r"( |^|[^\w])" + \
+                    escape(trigger.keyword) + r"( |$|[^\w])"
                 pro = fullmatch(pattern, name, flags=IGNORECASE)
                 if pro:
                     if trigger.snip_type == TYPE_PHOTO:
@@ -62,7 +64,8 @@ async def filter_incoming_handler(handler):
 @errors_handler
 async def add_new_filter(new_handler):
     """ For .filter command, allows adding new filters in a chat """
-    if not new_handler.text[0].isalpha() and new_handler.text[0] not in ("/", "#", "@", "!"):
+    if not new_handler.text[0].isalpha(
+    ) and new_handler.text[0] not in ("/", "#", "@", "!"):
         try:
             from userbot.modules.sql_helper.filter_sql import add_filter
         except AttributeError:
@@ -90,7 +93,13 @@ async def add_new_filter(new_handler):
 
         success = "`Filter` **{}** `{} successfully`"
 
-        if add_filter(str(new_handler.chat_id), keyword, snip['text'], snip['type'], snip.get('id'), snip.get('hash'), snip.get('fr')) is True:
+        if add_filter(str(new_handler.chat_id),
+                      keyword,
+                      snip['text'],
+                      snip['type'],
+                      snip.get('id'),
+                      snip.get('hash'),
+                      snip.get('fr')) is True:
             await new_handler.edit(success.format(keyword, 'added'))
         else:
             await new_handler.edit(success.format(keyword, 'updated'))
@@ -100,7 +109,8 @@ async def add_new_filter(new_handler):
 @errors_handler
 async def remove_a_filter(r_handler):
     """ For .stop command, allows you to remove a filter from a chat. """
-    if not r_handler.text[0].isalpha() and r_handler.text[0] not in ("/", "#", "@", "!"):
+    if not r_handler.text[0].isalpha(
+    ) and r_handler.text[0] not in ("/", "#", "@", "!"):
         try:
             from userbot.modules.sql_helper.filter_sql import remove_filter
         except AttributeError:
@@ -111,10 +121,10 @@ async def remove_a_filter(r_handler):
 
         if not remove_filter(r_handler.chat_id, filt):
             await r_handler.edit("`Filter` **{}** `doesn't exist.`"
-                             .format(filt))
+                                 .format(filt))
         else:
             await r_handler.edit("`Filter` **{}** `was deleted successfully`"
-                             .format(filt))
+                                 .format(filt))
 
 
 @register(outgoing=True, pattern="^.rmfilters (.*)")
@@ -153,7 +163,8 @@ async def kick_marie_filter(event):
 @errors_handler
 async def filters_active(event):
     """ For .filters command, lists all of the active filters in a chat. """
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         try:
             from userbot.modules.sql_helper.filter_sql import get_filters
         except AttributeError:
@@ -170,7 +181,6 @@ async def filters_active(event):
                 transact += "👁️ `{}`\n".format(filt.keyword)
 
         await event.edit(transact)
-
 
 
 CMD_HELP.update({

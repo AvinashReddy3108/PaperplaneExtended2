@@ -10,7 +10,8 @@ from userbot.events import register, errors_handler
 @register(outgoing=True, pattern=r"^.lock ?(.*)")
 @errors_handler
 async def locks(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         input_str = event.pattern_match.group(1)
         peer_id = event.chat_id
         msg = None
@@ -65,8 +66,8 @@ async def locks(event):
             cpin = True
             changeinfo = True
             what = "everything"
-            
-        banned_rights=ChatBannedRights(
+
+        banned_rights = ChatBannedRights(
             until_date=None,
             send_messages=msg,
             send_media=media,
@@ -84,7 +85,7 @@ async def locks(event):
                 peer=peer_id,
                 banned_rights=banned_rights
             ))
-        except:
+        except BaseException:
             await event.edit("`Do I have proper rights fot that ??`")
         else:
             await event.edit(f"`Locked {what} for this chat !!`")
@@ -95,7 +96,8 @@ async def locks(event):
 @register(outgoing=True, pattern=r"^.unlock ?(.*)")
 @errors_handler
 async def rem_locks(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         input_str = event.pattern_match.group(1)
         peer_id = event.chat_id
         msg = None
@@ -150,8 +152,8 @@ async def rem_locks(event):
             cpin = False
             changeinfo = False
             what = "everything"
-            
-        banned_rights=ChatBannedRights(
+
+        banned_rights = ChatBannedRights(
             until_date=None,
             send_messages=msg,
             send_media=media,
@@ -169,7 +171,7 @@ async def rem_locks(event):
                 peer=peer_id,
                 banned_rights=banned_rights
             ))
-        except:
+        except BaseException:
             await event.edit("`Do I have proper rights fot that ??`")
         else:
             await event.edit(f"`Unlocked {what} for this chat !!`")

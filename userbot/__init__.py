@@ -44,10 +44,12 @@ if version_info[0] < 3 or version_info[1] < 6:
 
 # Check if the config was edited by using the already used variable.
 # Basically, its the 'virginity check' for the config file ;)
-CONFIG_CHECK = os.environ.get("___________PLOX_______REMOVE_____THIS_____LINE__________", None)
+CONFIG_CHECK = os.environ.get(
+    "___________PLOX_______REMOVE_____THIS_____LINE__________", None)
 
 if CONFIG_CHECK:
-    LOGS.error("Please remove the line mentioned in the first hashtag from the config.env file")
+    LOGS.error(
+        "Please remove the line mentioned in the first hashtag from the config.env file")
     quit(1)
 
 # Telegram App KEY and HASH
@@ -70,7 +72,7 @@ PM_AUTO_BAN = sb(os.environ.get("PM_AUTO_BAN", "False"))
 # Console verbose logging
 CONSOLE_LOGGER_VERBOSE = sb(
     os.environ.get("CONSOLE_LOGGER_VERBOSE", "False")
-    )
+)
 
 # SQL Database URI
 DB_URI = os.environ.get("DATABASE_URL", None)
@@ -100,12 +102,12 @@ ANTI_SPAMBOT_SHOUT = sb(os.environ.get(
 # Youtube API key
 YOUTUBE_API_KEY = os.environ.get(
     "YOUTUBE_API_KEY", None
-    )
+)
 
 # Default .alive name
 ALIVE_NAME = os.environ.get(
     "ALIVE_NAME", None
-    )
+)
 
 # Clean Welcome
 CLEAN_WELCOME = sb(os.environ.get(
@@ -136,7 +138,8 @@ G_DRIVE_CLIENT_ID = os.environ.get("G_DRIVE_CLIENT_ID", None)
 G_DRIVE_CLIENT_SECRET = os.environ.get("G_DRIVE_CLIENT_SECRET", None)
 G_DRIVE_AUTH_TOKEN_DATA = os.environ.get("G_DRIVE_AUTH_TOKEN_DATA", None)
 GDRIVE_FOLDER_ID = os.environ.get("GDRIVE_FOLDER_ID", None)
-TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./downloads")
+TEMP_DOWNLOAD_DIRECTORY = os.environ.get(
+    "TMP_DOWNLOAD_DIRECTORY", "./downloads")
 
 # 'bot' variable
 if STRING_SESSION:

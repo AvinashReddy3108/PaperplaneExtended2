@@ -13,6 +13,7 @@ from userbot.events import register, errors_handler
 
 DOGBIN_URL = "https://del.dog/"
 
+
 @register(outgoing=True, pattern=r"^.paste(?: |$)([\s\S]*)")
 @errors_handler
 async def paste(pstl):
@@ -80,7 +81,8 @@ async def paste(pstl):
 @errors_handler
 async def get_dogbin_content(dog_url):
     """ For .getpaste command, fetches the content of a dogbin URL. """
-    if not dog_url.text[0].isalpha() and dog_url.text[0] not in ("/", "#", "@", "!"):
+    if not dog_url.text[0].isalpha() and dog_url.text[0] not in (
+            "/", "#", "@", "!"):
         textx = await dog_url.get_reply_message()
         message = dog_url.pattern_match.group(1)
         await dog_url.edit("`Getting dogbin content . . .`")
@@ -109,7 +111,7 @@ async def get_dogbin_content(dog_url):
             await dog_url.edit("Request returned an unsuccessful status code.\n\n" + str(HTTPErr))
             return
         except exceptions.Timeout as TimeoutErr:
-            await dog_url.edit("Request timed out."+ str(TimeoutErr))
+            await dog_url.edit("Request timed out." + str(TimeoutErr))
             return
         except exceptions.TooManyRedirects as RedirectsErr:
             await dog_url.edit("Request exceeded the configured number of maximum redirections." + str(RedirectsErr))

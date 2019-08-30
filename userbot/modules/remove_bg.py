@@ -13,7 +13,8 @@ from userbot import CMD_HELP, REM_BG_API_KEY, TEMP_DOWNLOAD_DIRECTORY
 @errors_handler
 async def kbg(remob):
     """ For .rbg command, Remove Image Background. """
-    if not remob.text[0].isalpha() and remob.text[0] not in ("/", "#", "@", "!"):
+    if not remob.text[0].isalpha() and remob.text[0] not in (
+            "/", "#", "@", "!"):
         if REM_BG_API_KEY is None:
             await remob.edit("`Error: Remove.BG API key missing! Add it to environment vars or config.env.`")
             return
@@ -24,7 +25,9 @@ async def kbg(remob):
             reply_message = await remob.get_reply_message()
             await remob.edit("`Processing..`")
             try:
-                if isinstance(reply_message.media, MessageMediaPhoto) or "image" in reply_message.media.document.mime_type.split('/'):
+                if isinstance(
+                        reply_message.media,
+                        MessageMediaPhoto) or "image" in reply_message.media.document.mime_type.split('/'):
                     downloaded_file_name = await remob.client.download_media(
                         reply_message,
                         TEMP_DOWNLOAD_DIRECTORY
@@ -83,7 +86,7 @@ async def ReTrieveURL(input_url):
         "X-API-Key": REM_BG_API_KEY,
     }
     data = {
-      "image_url": input_url
+        "image_url": input_url
     }
     r = requests.post(
         "https://api.remove.bg/v1.0/removebg",

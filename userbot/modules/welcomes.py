@@ -88,7 +88,8 @@ async def welcome_to_chat(event):
 @register(outgoing=True, pattern=r"^.welcome(?: |$)(.*)")
 @errors_handler
 async def save_welcome(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         try:
             from userbot.modules.sql_helper.welcome_sql import add_welcome_setting
         except AttributeError:
@@ -104,7 +105,11 @@ async def save_welcome(event):
                 await event.edit("`I can only have one welcome note per chat !!`")
         elif msg and msg.media:
             bot_api_file_id = pack_bot_file_id(msg.media)
-            if add_welcome_setting(event.chat_id, msg.message, 0, bot_api_file_id) is True:
+            if add_welcome_setting(
+                    event.chat_id,
+                    msg.message,
+                    0,
+                    bot_api_file_id) is True:
                 await event.edit("`Welcome note saved !!`")
             else:
                 await event.edit("`I can only have one welcome note per chat !!`")
@@ -118,7 +123,8 @@ async def save_welcome(event):
 @register(outgoing=True, pattern="^.show welcome$")
 @errors_handler
 async def show_welcome(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         try:
             from userbot.modules.sql_helper.welcome_sql import get_current_welcome_settings
         except AttributeError:
@@ -131,10 +137,12 @@ async def show_welcome(event):
         else:
             await event.edit("`No welcome note saved here !!`")
 
+
 @register(outgoing=True, pattern="^.del welcome$")
 @errors_handler
 async def del_welcome(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         try:
             from userbot.modules.sql_helper.welcome_sql import rm_welcome_setting
         except AttributeError:

@@ -18,10 +18,11 @@ from userbot import (COUNT_PM, CMD_HELP, BOTLOG, BOTLOG_CHATID,
 from userbot.events import register, errors_handler
 
 # ========================= CONSTANTS ============================
-UNAPPROVED_MSG = ("`Hello! This is an automated message.\n\n`"
-                  "`I haven't approved you to PM yet.`"
-                  "`Please wait for me to look in, I mostly approve PMs.\n\n`"
-                  "`Until then, please don't spam my PM, you'll get blocked and reported!`")
+UNAPPROVED_MSG = (
+    "`Hello! This is an automated message.\n\n`"
+    "`I haven't approved you to PM yet.`"
+    "`Please wait for me to look in, I mostly approve PMs.\n\n`"
+    "`Until then, please don't spam my PM, you'll get blocked and reported!`")
 # =================================================================
 
 
@@ -50,9 +51,9 @@ async def permitpm(event):
                     # If the message doesn't same as previous one
                     # Send the Unapproved Message again
                     if event.text != prevmsg:
-                        async for message in event.client.iter_messages(event.chat_id, 
-                                                                        from_user='me', 
-                                                                        search=UNAPPROVED_MSG, 
+                        async for message in event.client.iter_messages(event.chat_id,
+                                                                        from_user='me',
+                                                                        search=UNAPPROVED_MSG,
                                                                         limit=1):
                             await message.delete()
                         await event.reply(UNAPPROVED_MSG)
@@ -102,6 +103,7 @@ async def permitpm(event):
                             + " was just another retarded nibba",
                         )
 
+
 @register(disable_edited=True, outgoing=True)
 @errors_handler
 async def auto_accept(event):
@@ -140,7 +142,8 @@ async def auto_accept(event):
 @errors_handler
 async def notifoff(noff_event):
     """ For .notifoff command, stop getting notifications from unapproved PMs. """
-    if not noff_event.text[0].isalpha() and noff_event.text[0] not in ("/", "#", "@", "!"):
+    if not noff_event.text[0].isalpha(
+    ) and noff_event.text[0] not in ("/", "#", "@", "!"):
         try:
             from userbot.modules.sql_helper.globals import addgvar
         except AttributeError:
@@ -153,7 +156,8 @@ async def notifoff(noff_event):
 @errors_handler
 async def notifon(non_event):
     """ For .notifoff command, get notifications from unapproved PMs. """
-    if not non_event.text[0].isalpha() and non_event.text[0] not in ("/", "#", "@", "!"):
+    if not non_event.text[0].isalpha(
+    ) and non_event.text[0] not in ("/", "#", "@", "!"):
         try:
             from userbot.modules.sql_helper.globals import delgvar
         except AttributeError:
@@ -166,7 +170,8 @@ async def notifon(non_event):
 @errors_handler
 async def approvepm(apprvpm):
     """ For .approve command, give someone the permissions to PM you. """
-    if not apprvpm.text[0].isalpha() and apprvpm.text[0] not in ("/", "#", "@", "!"):
+    if not apprvpm.text[0].isalpha() and apprvpm.text[0] not in (
+            "/", "#", "@", "!"):
         try:
             from userbot.modules.sql_helper.pm_permit_sql import approve
         except AttributeError:
@@ -195,9 +200,9 @@ async def approvepm(apprvpm):
             f"[{name0}](tg://user?id={uid}) `approved to PM!`"
         )
 
-        async for message in apprvpm.client.iter_messages(apprvpm.chat_id, 
-                                                          from_user='me', 
-                                                          search=UNAPPROVED_MSG, 
+        async for message in apprvpm.client.iter_messages(apprvpm.chat_id,
+                                                          from_user='me',
+                                                          search=UNAPPROVED_MSG,
                                                           limit=1):
             await message.delete()
 
@@ -212,10 +217,11 @@ async def approvepm(apprvpm):
 @register(outgoing=True, pattern="^.disapprove$")
 @errors_handler
 async def disapprovepm(disapprvpm):
-    if not disapprvpm.text[0].isalpha() and disapprvpm.text[0] not in ("/", "#", "@", "!"):
+    if not disapprvpm.text[0].isalpha(
+    ) and disapprvpm.text[0] not in ("/", "#", "@", "!"):
         try:
             from userbot.modules.sql_helper.pm_permit_sql import dissprove
-        except:
+        except BaseException:
             await disapprvpm.edit("`Running on Non-SQL mode!`")
             return
 
@@ -232,7 +238,7 @@ async def disapprovepm(disapprvpm):
 
         await disapprvpm.edit(
             f"[{name0}](tg://user?id={disapprvpm.chat_id}) `Disaproved to PM!`"
-            )
+        )
 
         if BOTLOG:
             await disapprvpm.client.send_message(
@@ -246,7 +252,8 @@ async def disapprovepm(disapprvpm):
 @errors_handler
 async def blockpm(block):
     """ For .block command, block people from PMing you! """
-    if not block.text[0].isalpha() and block.text[0] not in ("/", "#", "@", "!"):
+    if not block.text[0].isalpha() and block.text[0] not in (
+            "/", "#", "@", "!"):
 
         await block.edit("`You've been blocked!`")
 

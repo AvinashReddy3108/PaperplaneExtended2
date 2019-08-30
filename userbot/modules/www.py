@@ -63,7 +63,8 @@ def speed_convert(size):
 @register(outgoing=True, pattern="^.nearestdc$")
 @errors_handler
 async def neardc(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         """ For .nearestdc command, get the nearest datacenter information. """
         result = await event.client(functions.help.GetNearestDcRequest())
         await event.edit(

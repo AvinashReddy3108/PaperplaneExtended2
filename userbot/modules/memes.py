@@ -427,9 +427,9 @@ SHGS = [
     "ヽ(~～~ )ノ",
     "┐(~ー~;)┌",
     "┐(-。ー;)┌",
-    "¯\_(ツ)_/¯",
-    "¯\_(⊙_ʖ⊙)_/¯",
-    "¯\_༼ ಥ ‿ ಥ ༽_/¯",
+    r"¯\_(ツ)_/¯",
+    r"¯\_(⊙_ʖ⊙)_/¯",
+    r"¯\_༼ ಥ ‿ ಥ ༽_/¯",
     "乁( ⁰͡  Ĺ̯ ⁰͡ ) ㄏ",
 ]
 
@@ -548,7 +548,8 @@ HIT = [
 @errors_handler
 async def univsaye(cowmsg):
     """ For .cowsay module, userbot wrapper for cow which says things. """
-    if not cowmsg.text[0].isalpha() and cowmsg.text[0] not in ("/", "#", "@", "!"):
+    if not cowmsg.text[0].isalpha() and cowmsg.text[0] not in (
+            "/", "#", "@", "!"):
         arg = cowmsg.pattern_match.group(1).lower()
         text = cowmsg.pattern_match.group(2)
 
@@ -576,7 +577,8 @@ async def kek(keks):
 @register(outgoing=True, pattern=r"^.coinflip (.*)")
 @errors_handler
 async def coin(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         if event.fwd_from:
             return
         r = random.randint(1, 100)
@@ -604,7 +606,8 @@ async def coin(event):
 @register(pattern="^.slap(?: |$)(.*)", outgoing=True)
 @errors_handler
 async def who(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         """ slaps a user, or get slapped if not a reply. """
         if event.fwd_from:
             return
@@ -619,7 +622,7 @@ async def who(event):
         try:
             await event.edit(caption)
 
-        except:
+        except BaseException:
             await event.edit("`Can't slap this person, need to fetch some sticks and stones !!`")
 
 
@@ -641,7 +644,9 @@ async def get_user(event):
         if event.message.entities is not None:
             probable_user_mention_entity = event.message.entities[0]
 
-            if isinstance(probable_user_mention_entity, MessageEntityMentionName):
+            if isinstance(
+                    probable_user_mention_entity,
+                    MessageEntityMentionName):
                 user_id = probable_user_mention_entity.user_id
                 replied_user = await event.client(GetFullUserRequest(user_id))
                 return replied_user
@@ -692,7 +697,8 @@ async def lol(lel):
 @register(outgoing=True, pattern="^.decide(?: |$)(.*)")
 @errors_handler
 async def decide(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         if event.fwd_from:
             return
         message = event.pattern_match.group(1)
@@ -703,8 +709,9 @@ async def decide(event):
             r = requests.get("https://yesno.wtf/api").json()
         else:
             try:
-                r = requests.get(f"https://yesno.wtf/api?force={message.lower()}").json()
-            except:
+                r = requests.get(
+                    f"https://yesno.wtf/api?force={message.lower()}").json()
+            except BaseException:
                 await event.edit("`Available decisions:` *yes*, *no*, *maybe*")
                 return
         await event.client.send_message(
@@ -759,9 +766,8 @@ async def copypasta(cp_e):
             return
 
         reply_text = random.choice(EMOJIS)
-        b_char = random.choice(
-            message
-        ).lower()  # choose a random character in the message to be substituted with 🅱️
+        # choose a random character in the message to be substituted with 🅱️
+        b_char = random.choice(message).lower()
         for owo in message:
             if owo == " ":
                 reply_text += random.choice(EMOJIS)
@@ -810,7 +816,8 @@ async def vapor(vpr):
 @errors_handler
 async def stretch(stret):
     """ Stretch it."""
-    if not stret.text[0].isalpha() and stret.text[0] not in ("/", "#", "@", "!"):
+    if not stret.text[0].isalpha() and stret.text[0] not in (
+            "/", "#", "@", "!"):
         textx = await stret.get_reply_message()
         message = stret.text
         message = stret.pattern_match.group(1)
@@ -825,7 +832,7 @@ async def stretch(stret):
         count = random.randint(3, 10)
         reply_text = re.sub(
             r"([aeiouAEIOUａｅｉｏｕＡＥＩＯＵаеиоуюяыэё])",
-            (r"\1"*count),
+            (r"\1" * count),
             message
         )
         await stret.edit(reply_text)
@@ -876,7 +883,8 @@ async def zal(zgfy):
 @errors_handler
 async def hoi(hello):
     """ Greet everyone! """
-    if not hello.text[0].isalpha() and hello.text[0] not in ("/", "#", "@", "!"):
+    if not hello.text[0].isalpha() and hello.text[0] not in (
+            "/", "#", "@", "!"):
         await hello.edit(random.choice(HELLOSTR))
 
 
@@ -909,14 +917,15 @@ async def faces(owo):
 @errors_handler
 async def react_meme(react):
     """ Make your userbot react to everything. """
-    if not react.text[0].isalpha() and react.text[0] not in ("/", "#", "@", "!"):
+    if not react.text[0].isalpha() and react.text[0] not in (
+            "/", "#", "@", "!"):
         await react.edit(random.choice(FACEREACTS))
 
 
 @register(outgoing=True, pattern="^.shg$")
 @errors_handler
 async def shrugger(shg):
-    """ ¯\_(ツ)_/¯ """
+    r""" ¯\_(ツ)_/¯ """
     if not shg.text[0].isalpha() and shg.text[0] not in ("/", "#", "@", "!"):
         await shg.edit(random.choice(SHGS))
 
@@ -933,7 +942,8 @@ async def runner_lol(run):
 @errors_handler
 async def metoo(hahayes):
     """ Haha yes """
-    if not hahayes.text[0].isalpha() and hahayes.text[0] not in ("/", "#", "@", "!"):
+    if not hahayes.text[0].isalpha() and hahayes.text[0] not in (
+            "/", "#", "@", "!"):
         await hahayes.edit(random.choice(METOOSTR))
 
 
@@ -957,7 +967,8 @@ async def iqless(e):
 @register(outgoing=True, pattern="^.moon$")
 @errors_handler
 async def _(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         if event.fwd_from:
             return
         deq = deque(list("🌗🌘🌑🌒🌓🌔🌕🌖"))
@@ -966,14 +977,15 @@ async def _(event):
                 await asyncio.sleep(0.1)
                 await event.edit("".join(deq))
                 deq.rotate(1)
-        except:
+        except BaseException:
             return
 
 
 @register(outgoing=True, pattern="^.clock$")
 @errors_handler
 async def _(event):
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         if event.fwd_from:
             return
         deq = deque(list("🕙🕘🕗🕖🕕🕔🕓🕒🕑🕐🕛"))
@@ -982,7 +994,7 @@ async def _(event):
                 await asyncio.sleep(0.1)
                 await event.edit("".join(deq))
                 deq.rotate(1)
-        except:
+        except BaseException:
             return
 
 
@@ -1016,7 +1028,8 @@ async def spongemocktext(mock):
 @errors_handler
 async def claptext(memereview):
     """ Praise people! """
-    if not memereview.text[0].isalpha() and memereview.text[0] not in ("/", "#", "@", "!"):
+    if not memereview.text[0].isalpha(
+    ) and memereview.text[0] not in ("/", "#", "@", "!"):
         textx = await memereview.get_reply_message()
         message = memereview.pattern_match.group(1)
         if message:
@@ -1050,14 +1063,26 @@ async def payf(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
         paytext = e.pattern_match.group(1)
         pay = "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}".format(
-            paytext*8, paytext*8, paytext*2, paytext*2, paytext*2, paytext*6, paytext*6, paytext*2, paytext*2, paytext*2, paytext*2, paytext*2)
+            paytext * 8,
+            paytext * 8,
+            paytext * 2,
+            paytext * 2,
+            paytext * 2,
+            paytext * 6,
+            paytext * 6,
+            paytext * 2,
+            paytext * 2,
+            paytext * 2,
+            paytext * 2,
+            paytext * 2)
         await e.edit(pay)
 
 
 @register(outgoing=True, pattern="^.lfy (.*)")
 @errors_handler
 async def let_me_google_that_for_you(lmgtfy_q):
-    if not lmgtfy_q.text[0].isalpha() and lmgtfy_q.text[0] not in ("/", "#", "@", "!"):
+    if not lmgtfy_q.text[0].isalpha(
+    ) and lmgtfy_q.text[0] not in ("/", "#", "@", "!"):
         textx = await lmgtfy_q.get_reply_message()
         qry = lmgtfy_q.pattern_match.group(1)
         if qry:
@@ -1076,7 +1101,8 @@ async def let_me_google_that_for_you(lmgtfy_q):
 @errors_handler
 async def scam(event):
     """ Just a small command to fake chat actions for fun !! """
-    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+    if not event.text[0].isalpha() and event.text[0] not in (
+            "/", "#", "@", "!"):
         input_str = event.pattern_match.group(1)
         input_time = event.pattern_match.group(2)
         action = "typing"
@@ -1087,7 +1113,7 @@ async def scam(event):
                 await event.delete()
                 async with event.client.action(event.chat_id, action):
                     await asyncio.sleep(int(time))
-        except:
+        except BaseException:
             await event.edit("`Wrong Syntax !!`")
             return
 
@@ -1096,7 +1122,8 @@ async def scam(event):
 @errors_handler
 async def typewriter(typew):
     """ Just a small command to make your keyboard become a typewriter! """
-    if not typew.text[0].isalpha() and typew.text[0] not in ("/", "#", "@", "!"):
+    if not typew.text[0].isalpha() and typew.text[0] not in (
+            "/", "#", "@", "!"):
         textx = await typew.get_reply_message()
         message = typew.pattern_match.group(1)
         if message:

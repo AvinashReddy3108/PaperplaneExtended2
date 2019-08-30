@@ -10,6 +10,7 @@ from asyncio import wait, sleep
 from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP
 from userbot.events import register, errors_handler
 
+
 @register(outgoing=True, pattern="^.tspam (.*)")
 @errors_handler
 async def tmeme(e):
@@ -24,14 +25,15 @@ async def tmeme(e):
                 BOTLOG_CHATID,
                 "#TSPAM \n\n"
                 "TSpam was executed successfully"
-                )
+            )
+
 
 @register(outgoing=True, pattern="^.spam (.*)")
 @errors_handler
 async def spammer(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
-        counter = int(e.pattern_match.group(1).split(' ',1)[0])
-        spam_message = str(e.pattern_match.group(1).split(' ',1)[1])
+        counter = int(e.pattern_match.group(1).split(' ', 1)[0])
+        spam_message = str(e.pattern_match.group(1).split(' ', 1)[1])
         await asyncio.wait([e.respond(spam_message) for i in range(counter)])
         await e.delete()
         if BOTLOG:
@@ -39,7 +41,7 @@ async def spammer(e):
                 BOTLOG_CHATID,
                 "#SPAM \n\n"
                 "Spam was executed successfully"
-                )
+            )
 
 
 @register(outgoing=True, pattern="^.picspam")
@@ -58,16 +60,16 @@ async def tiny_pic_spam(e):
                 BOTLOG_CHATID,
                 "#PICSPAM \n\n"
                 "PicSpam was executed successfully"
-                )
+            )
 
 
 @register(outgoing=True, pattern="^.delayspam (.*)")
 @errors_handler
 async def spammer(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
-        spamDelay = float(e.pattern_match.group(1).split(' ',2)[0])
-        counter = int(e.pattern_match.group(1).split(' ',2)[1])
-        spam_message = str(e.pattern_match.group(1).split(' ',2)[2])
+        spamDelay = float(e.pattern_match.group(1).split(' ', 2)[0])
+        counter = int(e.pattern_match.group(1).split(' ', 2)[1])
+        spam_message = str(e.pattern_match.group(1).split(' ', 2)[2])
         for i in range(1, counter):
             await e.respond(spam_message)
             await sleep(spamDelay)
@@ -77,7 +79,7 @@ async def spammer(e):
                 BOTLOG_CHATID,
                 "#DelaySPAM \n\n"
                 "DelaySpam was executed successfully"
-                )
+            )
 
 CMD_HELP.update({
     "spam": ".tspam <text>\

@@ -15,7 +15,8 @@ from userbot.events import register, errors_handler
 @errors_handler
 async def useridgetter(target):
     """ For .userid command, returns the ID of the target user. """
-    if not target.text[0].isalpha() and target.text[0] not in ("/", "#", "@", "!"):
+    if not target.text[0].isalpha() and target.text[0] not in (
+            "/", "#", "@", "!"):
         message = await target.get_reply_message()
         if message:
             if not message.forward:
@@ -49,7 +50,8 @@ async def chatidgetter(chat):
 @errors_handler
 async def log(log_text):
     """ For .log command, forwards a message or the command argument to the bot logs group """
-    if not log_text.text[0].isalpha() and log_text.text[0] not in ("/", "#", "@", "!"):
+    if not log_text.text[0].isalpha(
+    ) and log_text.text[0] not in ("/", "#", "@", "!"):
         if BOTLOG:
             if log_text.reply_to_msg_id:
                 reply_msg = await log_text.get_reply_message()
@@ -72,7 +74,8 @@ async def log(log_text):
 @errors_handler
 async def kickme(leave):
     """ Basically it's .kickme command """
-    if not leave.text[0].isalpha() and leave.text[0] not in ("/", "#", "@", "!"):
+    if not leave.text[0].isalpha() and leave.text[0] not in (
+            "/", "#", "@", "!"):
         await leave.edit("`Nope, no, no, I go away`")
         sleep(2)
         await leave.delete()
@@ -83,7 +86,8 @@ async def kickme(leave):
 @errors_handler
 async def unmute_chat(unm_e):
     """ For .unmutechat command, unmute a muted chat. """
-    if not unm_e.text[0].isalpha() and unm_e.text[0] not in ("/", "#", "@", "!"):
+    if not unm_e.text[0].isalpha() and unm_e.text[0] not in (
+            "/", "#", "@", "!"):
         try:
             from userbot.modules.sql_helper.keep_read_sql import unkread
         except AttributeError:
@@ -99,7 +103,8 @@ async def unmute_chat(unm_e):
 @errors_handler
 async def mute_chat(mute_e):
     """ For .mutechat command, mute any chat. """
-    if not mute_e.text[0].isalpha() and mute_e.text[0] not in ("/", "#", "@", "!"):
+    if not mute_e.text[0].isalpha() and mute_e.text[0] not in (
+            "/", "#", "@", "!"):
         try:
             from userbot.modules.sql_helper.keep_read_sql import kread
         except AttributeError:
