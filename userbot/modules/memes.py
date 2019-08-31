@@ -1138,7 +1138,7 @@ async def typewriter(typew):
             return
         sleep_time = 0.03
         typing_symbol = "█"
-        old_text = None
+        old_text = ""
         await typew.edit(typing_symbol)
         await asyncio.sleep(sleep_time)
         for character in message:
