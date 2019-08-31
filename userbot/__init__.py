@@ -109,6 +109,16 @@ ALIVE_NAME = os.environ.get(
     "ALIVE_NAME", None
 )
 
+# Time & Date - Country and Time Zone
+COUNTRY = str(os.environ.get(
+    "COUNTRY", ""
+))
+
+TZ_NUMBER = int(os.environ.get(
+    "TZ_NUMBER", 1
+))
+
+
 # Clean Welcome
 CLEAN_WELCOME = sb(os.environ.get(
     "CLEAN_WELCOME", "True"

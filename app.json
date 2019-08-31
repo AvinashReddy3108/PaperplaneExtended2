@@ -26,6 +26,15 @@
       "description": "Get this value by running [python3 string_session.py] in Termux or local system.",
       "required": true
     },
+    "COUNTRY": {
+      "description": "Set your Country to be used in the .time and .date commands.",
+      "required": false
+    },
+    "TZ_NUMBER": {
+      "description": "Change this value in case your country has multiple Time Zones.",
+      "value": "1",
+      "required": false
+    },
     "CHROME_DRIVER": {
       "description": "ChromeDriver location for selenium based modules.",
       "value": "/usr/bin/chromedriver",
