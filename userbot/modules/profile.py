@@ -140,6 +140,7 @@ async def count(event):
         bc = 0
         b = 0
         result = ""
+        await event.edit("`Processing..`")
         dialogs = await bot.get_dialogs(
             limit=None,
             ignore_migrated=True
@@ -161,11 +162,11 @@ async def count(event):
             else:
                 print(d)
 
-        result += f"Users:\t{u}\n"
-        result += f"Groups:\t{g}\n"
-        result += f"Super Groups:\t{c}\n"
-        result += f"Channels:\t{bc}\n"
-        result += f"Bots:\t{b}"
+        result += f"`Users:`\t**{u}**\n"
+        result += f"`Groups:`\t**{g}**\n"
+        result += f"`Super Groups:`\t**{c}**\n"
+        result += f"`Channels:`\t**{bc}**\n"
+        result += f"`Bots:`\t**{b}**"
 
         await event.edit(result)
 

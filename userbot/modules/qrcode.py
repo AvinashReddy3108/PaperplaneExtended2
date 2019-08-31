@@ -10,7 +10,6 @@
 
 import os
 import asyncio
-from datetime import datetime
 
 import qrcode
 import barcode
@@ -27,9 +26,6 @@ from userbot.events import register, errors_handler
 async def parseqr(qr_e):
     """ For .decode command, get QR Code/BarCode content from the replied photo. """
     if not qr_e.text[0].isalpha() and qr_e.text[0] not in ("/", "#", "@", "!"):
-        if qr_e.fwd_from:
-            return
-        start = datetime.now()
         downloaded_file_name = await qr_e.client.download_media(
             await qr_e.get_reply_message()
         )
@@ -54,16 +50,10 @@ async def parseqr(qr_e):
         if not t_response:
             logger.info(e_response)
             logger.info(t_response)
-            await qr_e.edit("@oo0pps .. something wrongings. Failed to decode")
+            await qr_e.edit("Failed to decode.")
             return
         soup = BeautifulSoup(t_response, "html.parser")
         qr_contents = soup.find_all("pre")[0].text
-        end = datetime.now()
-        duration = (end - start).seconds
-        await qr_e.edit(
-            "Obtained contents in {} seconds.\n{}".format(duration, qr_contents)
-        )
-        await asyncio.sleep(5)
         await qr_e.edit(qr_contents)
 
 
@@ -73,8 +63,7 @@ async def barcode(event):
     """ For .barcode command, genrate a barcode containing the given content. """
     if not event.text[0].isalpha() and event.text[0] not in (
             "/", "#", "@", "!"):
-        await event.edit("...")
-        start = datetime.now()
+        await event.edit("`Processing..`")
         input_str = event.pattern_match.group(1)
         message = "SYNTAX: `.barcode <long text to include>`"
         reply_msg_id = event.message.id
@@ -114,10 +103,6 @@ async def barcode(event):
         except Exception as e:
             await event.edit(str(e))
             return
-        end = datetime.now()
-        ms = (end - start).seconds
-        await event.edit("Created BarCode in {} seconds".format(ms))
-        await asyncio.sleep(5)
         await event.delete()
 
 
@@ -129,7 +114,6 @@ async def make_qr(makeqr):
             "/", "#", "@", "!"):
         if makeqr.fwd_from:
             return
-        start = datetime.now()
         input_str = makeqr.pattern_match.group(1)
         message = "SYNTAX: `.makeqr <long text to include>`"
         reply_msg_id = None
@@ -168,9 +152,6 @@ async def make_qr(makeqr):
             reply_to=reply_msg_id
         )
         os.remove("img_file.webp")
-        duration = (datetime.now() - start).seconds
-        await makeqr.edit("Created QRCode in {} seconds".format(duration))
-        await asyncio.sleep(5)
         await makeqr.delete()
 
 

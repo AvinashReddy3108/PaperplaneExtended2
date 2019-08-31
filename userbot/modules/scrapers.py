@@ -13,7 +13,6 @@ import re
 from time import sleep
 from html import unescape
 from re import findall
-from datetime import datetime
 from selenium import webdriver
 from urllib.parse import quote_plus
 from urllib.error import HTTPError
@@ -151,7 +150,6 @@ async def _(event):
             "/", "#", "@", "!"):
         if event.fwd_from:
             return
-        start = datetime.now()
         input_str = event.pattern_match.group(1)
         input_sgra = input_str.split(" ")
         if len(input_sgra) == 3:
@@ -173,8 +171,7 @@ async def _(event):
                 await event.edit(str(e))
         else:
             await event.edit("`Invalid syntax.`")
-        end = datetime.now()
-        ms = (end - start).seconds
+            return
 
 
 @register(outgoing=True, pattern=r"^.google (.*)")

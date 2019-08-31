@@ -36,7 +36,7 @@ async def ocr_space_file(filename, overlay=False, api_key=OCR_SPACE_API_KEY, lan
 async def ocr(event):
     if not event.text[0].isalpha() and event.text[0] not in (
             "/", "#", "@", "!"):
-        await event.edit("*Reading...*")
+        await event.edit("`Reading...`")
         if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
             os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
         lang_code = event.pattern_match.group(1)
@@ -47,12 +47,10 @@ async def ocr(event):
         test_file = await ocr_space_file(filename=downloaded_file_name, language=lang_code)
         try:
             ParsedText = test_file["ParsedResults"][0]["ParsedText"]
-            ProcessingTimeInMilliseconds = str(
-                int(test_file["ProcessingTimeInMilliseconds"]) // 1000)
         except BaseException:
-            await event.edit("Couldn't read it.\nI guess I need new glasses.")
+            await event.edit("`Couldn't read it.`\n`I guess I need new glasses.`")
         else:
-            await event.edit("Read Document in {} seconds. \n{}".format(ProcessingTimeInMilliseconds, ParsedText))
+            await event.edit(f"`Here's what I could read from it:`\n\n{ParsedText}")
         os.remove(downloaded_file_name)
 
 

@@ -10,7 +10,6 @@ import os
 import time
 from pySmartDL import SmartDL
 from telethon import events
-from datetime import datetime
 from apiclient.discovery import build
 from apiclient.http import MediaFileUpload
 from apiclient.errors import ResumableUploadError
@@ -60,7 +59,6 @@ async def download(dryb):
             os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
             required_file_name = None
         if "|" in input_str:
-            start = datetime.now()
             url, file_name = input_str.split("|")
             url = url.strip()
             # https://stackoverflow.com/a/761825/4723940
@@ -101,12 +99,10 @@ async def download(dryb):
                 except Exception as e:
                     LOGS.info(str(e))
                     pass
-            end = datetime.now()
-            duration = (end - start).seconds
             if downloader.isSuccessful():
                 await dryb.edit(
-                    "Downloaded to `{}` in {} seconds.\nNow uploading to GDrive...".format(
-                        downloaded_file_name, duration)
+                    "Downloaded to `{}` successfully !!\nInitiating upload to Google Drive..".format(
+                        downloaded_file_name)
                 )
                 required_file_name = downloaded_file_name
             else:
@@ -116,16 +112,12 @@ async def download(dryb):
         elif input_str:
             input_str = input_str.strip()
             if os.path.exists(input_str):
-                start = datetime.now()
-                end = datetime.now()
-                duration = (end - start).seconds
                 required_file_name = input_str
-                await dryb.edit("Found `{}` in {} seconds, uploading to Google Drive !!".format(input_str, duration))
+                await dryb.edit("Found `{}` in local server, initiating upload to Google Drive..".format(input_str, duration))
             else:
-                await dryb.edit("File not found in local server. Give me a valid file path !!")
+                await dryb.edit("File not found in local server. Give me a valid file path !")
                 return False
         elif dryb.reply_to_msg_id:
-            start = datetime.now()
             try:
                 c_time = time.time()
                 downloaded_file_name = await dryb.client.download_media(
@@ -138,12 +130,10 @@ async def download(dryb):
             except Exception as e:  # pylint:disable=C0103,W0703
                 await dryb.edit(str(e))
             else:
-                end = datetime.now()
                 required_file_name = downloaded_file_name
-                duration = (end - start).seconds
                 await dryb.edit(
-                    "Downloaded to `{}` in {} seconds.\nNow uploading to GDrive...".format(
-                        downloaded_file_name, duration)
+                    "Downloaded to `{}` successfully !!\nInitiating upload to Google Drive..".format(
+                        downloaded_file_name)
                 )
     if required_file_name:
         #

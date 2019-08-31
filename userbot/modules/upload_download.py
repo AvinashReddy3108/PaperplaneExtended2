@@ -13,7 +13,6 @@
 import json
 import os
 import subprocess
-from datetime import datetime
 import time
 import math
 
@@ -111,7 +110,6 @@ async def download(target_file):
         if not os.path.isdir(TEMP_DOWNLOAD_DIRECTORY):
             os.makedirs(TEMP_DOWNLOAD_DIRECTORY)
         if "|" in input_str:
-            start = datetime.now()
             url, file_name = input_str.split("|")
             url = url.strip()
             # https://stackoverflow.com/a/761825/4723940
@@ -152,19 +150,16 @@ async def download(target_file):
                 except Exception as e:
                     LOGS.info(str(e))
                     pass
-            end = datetime.now()
-            duration = (end - start).seconds
             if downloader.isSuccessful():
                 await target_file.edit(
-                    "Downloaded to `{}` in {} seconds.".format(
-                        downloaded_file_name, duration)
+                    "Downloaded to `{}` successfully !!".format(
+                        downloaded_file_name)
                 )
             else:
                 await target_file.edit(
                     "Incorrect URL\n{}".format(url)
                 )
         elif target_file.reply_to_msg_id:
-            start = datetime.now()
             try:
                 c_time = time.time()
                 downloaded_file_name = await target_file.client.download_media(
@@ -177,11 +172,9 @@ async def download(target_file):
             except Exception as e:  # pylint:disable=C0103,W0703
                 await target_file.edit(str(e))
             else:
-                end = datetime.now()
-                duration = (end - start).seconds
                 await target_file.edit(
-                    "Downloaded to `{}` in {} seconds.".format(
-                        downloaded_file_name, duration)
+                    "Downloaded to `{}` successfully !!".format(
+                        downloaded_file_name)
                 )
         else:
             await target_file.edit("Reply to a message to download to my local server.")
@@ -197,7 +190,6 @@ async def uploadir(udir_event):
             return
         input_str = udir_event.pattern_match.group(1)
         if os.path.exists(input_str):
-            start = datetime.now()
             await udir_event.edit("Processing ...")
             lst_of_files = []
             for r, d, f in os.walk(input_str):
@@ -265,9 +257,7 @@ async def uploadir(udir_event):
                         )
                     os.remove(single_file)
                     uploaded = uploaded + 1
-            end = datetime.now()
-            duration = (end - start).seconds
-            await udir_event.edit("Uploaded {} files in {} seconds.".format(uploaded, duration))
+            await udir_event.edit("Uploaded {} files successfully !!".format(uploaded))
         else:
             await udir_event.edit("404: Directory Not Found")
 
@@ -289,7 +279,6 @@ async def upload(u_event):
             await u_event.edit("`That's a dangerous operation! Not Permitted!`")
             return
         if os.path.exists(input_str):
-            start = datetime.now()
             c_time = time.time()
             await u_event.client.send_file(
                 u_event.chat_id,
@@ -301,9 +290,7 @@ async def upload(u_event):
                     progress(d, t, u_event, c_time, "Uploading...", input_str)
                 )
             )
-            end = datetime.now()
-            duration = (end - start).seconds
-            await u_event.edit("Uploaded in {} seconds.".format(duration))
+            await u_event.edit("Uploaded successfully !!")
         else:
             await u_event.edit("404: File Not Found")
 
@@ -392,7 +379,6 @@ async def uploadas(uas_event):
             thumb_path = "a_random_f_file_name" + ".jpg"
             thumb = get_video_thumb(file_name, output=thumb_path)
         if os.path.exists(file_name):
-            start = datetime.now()
             metadata = extractMetadata(createParser(file_name))
             duration = 0
             width = 0
@@ -452,10 +438,8 @@ async def uploadas(uas_event):
                 elif spam_big_messages:
                     await uas_event.edit("TBD: Not (yet) Implemented")
                     return
-                end = datetime.now()
-                duration = (end - start).seconds
                 os.remove(thumb)
-                await uas_event.edit("Uploaded in {} seconds.".format(duration))
+                await uas_event.edit("Uploaded successfully !!")
             except FileNotFoundError as err:
                 await uas_event.edit(str(err))
         else:
