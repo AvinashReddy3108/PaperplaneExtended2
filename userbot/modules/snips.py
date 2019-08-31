@@ -124,10 +124,10 @@ async def on_snip_list(event):
         await event.edit(message)
 
 
-@register(outgoing=True, pattern="^.delete (.*)")
+@register(outgoing=True, pattern="^.remsnip (.*)")
 @errors_handler
 async def on_snip_delete(event):
-    """ For .delete command, deletes a snip. """
+    """ For .remsnip command, deletes a snip. """
     try:
         from userbot.modules.sql_helper.snips_sql import remove_snip
     except AttributeError:
@@ -147,6 +147,6 @@ $<snip_name>\
 \nUsage: Saves the replied message as a snip with the name. (Works with pics, docs, and stickers too!)\
 \n\n.snips\
 \nUsage: Gets all saved snips.\
-\n\n.delete <snip_name>\
+\n\n.remsnip <snip_name>\
 \nUsage: Deletes the specified snip.\
 "})

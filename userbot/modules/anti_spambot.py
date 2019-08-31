@@ -150,20 +150,22 @@ async def ANTI_SPAMBOT(welcm):
                 else:
                     try:
 
-                    await welcm.reply(
-                        "`Potential Spambot Detected! Kicking away! "
-                        "Will log the ID for further purposes!\n"
-                        f"USER:` [{check_user.first_name}](tg://user?id={check_user.id})")
-
-                    await welcm.client(
-                        EditBannedRequest(
-                            welcm.chat_id,
-                            check_user.id,
-                            KICK_RIGHTS
+                        await welcm.reply(
+                            "`Potential Spambot Detected !!`\n"
+                            f"`REASON:` {reason}\n"
+                            "Kicking away for now, will log the ID for further purposes.\n"
+                            f"USER:` [{check_user.first_name}](tg://user?id={check_user.id})"
                         )
-                    )
-                    kicked = True
-                    reported = False
+
+                        await welcm.client(
+                            EditBannedRequest(
+                                welcm.chat_id,
+                                check_user.id,
+                                KICK_RIGHTS
+                            )
+                        )
+                        kicked = True
+                        reported = False
 
                     except BaseException:
                         if ANTI_SPAMBOT_SHOUT:
