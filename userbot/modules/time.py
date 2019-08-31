@@ -19,7 +19,6 @@ from userbot.events import register, errors_handler
 # ===== CONSTANT =====
 COUNTRY = ''
 TZ_NUMBER = 1
-
 # ===== CONSTANT =====
 
 
