@@ -21,34 +21,24 @@ async def locks(event):
         changeinfo = None
         if input_str is "msg":
             msg = True
-            what = "messages"
         if input_str is "media":
             media = True
-            what = "media"
         if input_str is "sticker":
             sticker = True
-            what = "stickers"
         if input_str is "gif":
             gif = True
-            what = "GIFs"
         if input_str is "game":
             gamee = True
-            what = "games"
         if input_str is "inline":
             ainline = True
-            what = "inline bots"
         if input_str is "poll":
             gpoll = True
-            what = "polls"
         if input_str is "invite":
             adduser = True
-            what = "invites"
         if input_str is "pin":
             cpin = True
-            what = "pins"
         if input_str is "info":
             changeinfo = True
-            what = "chat info"
         if input_str is "all":
             msg = True
             media = True
@@ -60,7 +50,6 @@ async def locks(event):
             adduser = True
             cpin = True
             changeinfo = True
-            what = "everything"
 
         lock_rights = types.ChatBannedRights(
             until_date=None,
@@ -79,7 +68,7 @@ async def locks(event):
             await bot(
                 functions.messages.EditChatDefaultBannedRightsRequest(peer=peer_id,
                                                                       banned_rights=lock_rights))
-            await event.edit(f"`Locked {what} for this chat !!`")
+            await event.delete()
         except BaseException as e:
             await event.edit(f"`Do I have proper rights for that ??`\n{str(e)}")
             
@@ -103,34 +92,24 @@ async def rem_locks(event):
         changeinfo = None
         if input_str is "msg":
             msg = False
-            what = "messages"
         if input_str is "media":
             media = False
-            what = "media"
         if input_str is "sticker":
             sticker = False
-            what = "stickers"
         if input_str is "gif":
             gif = False
-            what = "GIFs"
         if input_str is "game":
             gamee = False
-            what = "games"
         if input_str is "inline":
             ainline = False
-            what = "inline bots"
         if input_str is "poll":
             gpoll = False
-            what = "polls"
         if input_str is "invite":
             adduser = False
-            what = "invites"
         if input_str is "pin":
             cpin = False
-            what = "pins"
         if input_str is "info":
             changeinfo = False
-            what = "chat info"
         if input_str is "all":
             msg = False
             media = False
@@ -142,7 +121,6 @@ async def rem_locks(event):
             adduser = False
             cpin = False
             changeinfo = False
-            what = "everything"
 
         unlock_rights = ChatBannedRights(
             until_date=None,
@@ -162,7 +140,7 @@ async def rem_locks(event):
                 functions.messages.EditChatDefaultBannedRightsRequest(peer=peer_id,
                                                                       banned_rights=unlock_rights)
             )
-            await event.edit(f"`Unlocked {what} for this chat !!`")
+            await event.delete()
         except BaseException as e:
             await event.edit(f"`Do I have proper rights for that ??`\n{str(e)}")
 
