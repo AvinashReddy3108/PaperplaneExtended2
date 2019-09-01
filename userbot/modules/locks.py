@@ -1,13 +1,8 @@
-from telethon.tl.functions.channels import EditBannedRequest
-from telethon.tl.functions.messages import EditChatDefaultBannedRightsRequest
-from telethon.tl.types import ChatBannedRights
+from telethon import events, functions, types
+from userbot import bot, CMD_HELP
+from userbot.events import errors_handler
 
-from asyncio import sleep
-from userbot import CMD_HELP
-from userbot.events import register, errors_handler
-
-
-@register(outgoing=True, pattern=r"^.lock ?(.*)")
+@bot.on(events.NewMessage(pattern=r"^.lock ?(.*)", outgoing=True))
 @errors_handler
 async def locks(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@",
@@ -67,7 +62,7 @@ async def locks(event):
             changeinfo = True
             what = "everything"
 
-        lock_rights = ChatBannedRights(
+        lock_rights = types.ChatBannedRights(
             until_date=None,
             send_messages=msg,
             send_media=media,
@@ -81,15 +76,15 @@ async def locks(event):
             change_info=changeinfo,
         )
         try:
-            locked = await event.client(
-                EditChatDefaultBannedRightsRequest(peer=peer_id,
-                                                   banned_rights=lock_rights))
+            await bot(
+                functions.messages.EditChatDefaultBannedRightsRequest(peer=peer_id,
+                                                                      banned_rights=lock_rights))
             await event.edit(f"`Locked {what} for this chat !!`")
         except BaseException as e:
             await event.edit(f"`Do I have proper rights for that ??`\n{str(e)}")
+            
 
-
-@register(outgoing=True, pattern=r"^.unlock ?(.*)")
+@bot.on(events.NewMessage(pattern=r"^.unlock ?(.*)", outgoing=True))
 @errors_handler
 async def rem_locks(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@",
@@ -163,13 +158,11 @@ async def rem_locks(event):
             change_info=changeinfo,
         )
         try:
-            unlocked = await event.client(
-                EditChatDefaultBannedRightsRequest(peer=peer_id,
-                                                   banned_rights=unlock_rights)
+            await bot(
+                functions.messages.EditChatDefaultBannedRightsRequest(peer=peer_id,
+                                                                      banned_rights=unlock_rights)
             )
             await event.edit(f"`Unlocked {what} for this chat !!`")
-            await sleep(3)
-            await event.delete()
         except BaseException as e:
             await event.edit(f"`Do I have proper rights for that ??`\n{str(e)}")
 
