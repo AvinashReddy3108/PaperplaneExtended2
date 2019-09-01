@@ -1,11 +1,20 @@
-from telethon import events, functions, types
-from userbot import bot, CMD_HELP
+from telethon.tl.functions.messages import EditChatDefaultBannedRightsRequest
+from telethon.tl.types import ChatBannedRights
 
-@bot.on(events.NewMessage(pattern=r"^.lock ?(.*)", outgoing=True))
+from asyncio import sleep
+from userbot import CMD_HELP
+from userbot.events import register, errors_handler
+
+
+@register(outgoing=True, pattern=r"^.lock ?(.*)")
+@errors_handler
 async def locks(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@",
                                                              "!"):
         input_str = event.pattern_match.group(1)
+        if not input_str:
+            await event.edit("`I can't lock nothing in this chat !!`")
+            return
         peer_id = event.chat_id
         msg = None
         media = None
@@ -17,27 +26,37 @@ async def locks(event):
         adduser = None
         cpin = None
         changeinfo = None
-        if input_str is "msg":
+        if input_str == "msg":
             msg = True
-        if input_str is "media":
+            what = "messages"
+        if input_str.lower() == "media":
             media = True
-        if input_str is "sticker":
+            what = "media"
+        if input_str.lower() == "sticker":
             sticker = True
-        if input_str is "gif":
+            what = "stickers"
+        if input_str.lower() == "gif":
             gif = True
-        if input_str is "game":
+            what = "GIFs"
+        if input_str.lower() == "game":
             gamee = True
-        if input_str is "inline":
+            what = "games"
+        if input_str.lower() == "inline":
             ainline = True
-        if input_str is "poll":
+            what = "inline bots"
+        if input_str.lower() == "poll":
             gpoll = True
-        if input_str is "invite":
+            what = "polls"
+        if input_str.lower() == "invite":
             adduser = True
-        if input_str is "pin":
+            what = "invites"
+        if input_str.lower() == "pin":
             cpin = True
-        if input_str is "info":
+            what = "pins"
+        if input_str.lower() == "info":
             changeinfo = True
-        if input_str is "all":
+            what = "chat info"
+        if input_str.lower() == "all":
             msg = True
             media = True
             sticker = True
@@ -48,8 +67,9 @@ async def locks(event):
             adduser = True
             cpin = True
             changeinfo = True
+            what = "everything"
 
-        lock_rights = types.ChatBannedRights(
+        lock_rights = ChatBannedRights(
             until_date=None,
             send_messages=msg,
             send_media=media,
@@ -63,21 +83,29 @@ async def locks(event):
             change_info=changeinfo,
         )
         try:
-            locked = await bot(
-                functions.messages.EditChatDefaultBannedRightsRequest(peer=peer_id,
-                                                                      banned_rights=lock_rights))
+            await event.client(
+                EditChatDefaultBannedRightsRequest(peer=peer_id,
+                                                   banned_rights=lock_rights))
+            await event.edit(f"`Locked {what} for this chat !!`")
+            await sleep(3)
+            await event.delete()
         except BaseException as e:
-            await event.edit(f"`Do I have proper rights for that ??`\n{str(e)}")
+            await event.edit(f"`Do I have proper rights for that ??`\n**Error:** {str(e)}")
             return
         else:
-            await event.delete()
-            
+            await event.edit(f"`Invalid lock type:` {input_str}")
+            return
 
-@bot.on(events.NewMessage(pattern=r"^.unlock ?(.*)", outgoing=True))
+
+@register(outgoing=True, pattern=r"^.unlock ?(.*)")
+@errors_handler
 async def rem_locks(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@",
                                                              "!"):
         input_str = event.pattern_match.group(1)
+        if not input_str:
+            await event.edit("`I can't unlock nothing in this chat !!`")
+            return
         peer_id = event.chat_id
         msg = None
         media = None
@@ -89,27 +117,37 @@ async def rem_locks(event):
         adduser = None
         cpin = None
         changeinfo = None
-        if input_str is "msg":
+        if input_str.lower() == "msg":
             msg = False
-        if input_str is "media":
+            what = "messages"
+        if input_str.lower() == "media":
             media = False
-        if input_str is "sticker":
+            what = "media"
+        if input_str.lower() == "sticker":
             sticker = False
-        if input_str is "gif":
+            what = "stickers"
+        if input_str.lower() == "gif":
             gif = False
-        if input_str is "game":
+            what = "GIFs"
+        if input_str.lower() == "game":
             gamee = False
-        if input_str is "inline":
+            what = "games"
+        if input_str.lower() == "inline":
             ainline = False
-        if input_str is "poll":
+            what = "inline bots"
+        if input_str.lower() == "poll":
             gpoll = False
-        if input_str is "invite":
+            what = "polls"
+        if input_str.lower() == "invite":
             adduser = False
-        if input_str is "pin":
+            what = "invites"
+        if input_str.lower() == "pin":
             cpin = False
-        if input_str is "info":
+            what = "pins"
+        if input_str.lower() == "info":
             changeinfo = False
-        if input_str is "all":
+            what = "chat info"
+        if input_str.lower() == "all":
             msg = False
             media = False
             sticker = False
@@ -120,6 +158,7 @@ async def rem_locks(event):
             adduser = False
             cpin = False
             changeinfo = False
+            what = "everything"
 
         unlock_rights = ChatBannedRights(
             until_date=None,
@@ -135,16 +174,18 @@ async def rem_locks(event):
             change_info=changeinfo,
         )
         try:
-            unlocked = await bot(
-                functions.messages.EditChatDefaultBannedRightsRequest(peer=peer_id,
-                                                                      banned_rights=unlock_rights)
+            await event.client(
+                EditChatDefaultBannedRightsRequest(peer=peer_id,
+                                                   banned_rights=unlock_rights)
             )
+            await event.edit(f"`Unlocked {what} for this chat !!`")
+            await sleep(3)
+            await event.delete()
         except BaseException as e:
-            await event.edit(f"`Do I have proper rights for that ??`\n{str(e)}")
+            await event.edit(f"`Do I have proper rights for that ??`\n**Error:** {str(e)}")
             return
         else:
-            await event.delete()
-
+            await event.edit(f"`Invalid unlock type:` {input_str}")
 
 CMD_HELP.update({
     "locks":
@@ -152,6 +193,5 @@ CMD_HELP.update({
 \nUsage: Allows you to lock/unlock some common message types in the chat.\
 [NOTE: Requires proper admin rights in the chat !!]\
 \n\nAvailable message types to lock/unlock are: \
-\n`all, msg, media, sticker, gif, game, inline, poll, invite, pin, info`\
-"
+\n`all, msg, media, sticker, gif, game, inline, poll, invite, pin, info`"
 })
