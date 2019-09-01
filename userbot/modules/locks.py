@@ -1,9 +1,7 @@
 from telethon import events, functions, types
 from userbot import bot, CMD_HELP
-from userbot.events import errors_handler
 
 @bot.on(events.NewMessage(pattern=r"^.lock ?(.*)", outgoing=True))
-@errors_handler
 async def locks(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@",
                                                              "!"):
@@ -65,7 +63,7 @@ async def locks(event):
             change_info=changeinfo,
         )
         try:
-            await bot(
+            locked = await bot(
                 functions.messages.EditChatDefaultBannedRightsRequest(peer=peer_id,
                                                                       banned_rights=lock_rights))
             await event.delete()
@@ -74,7 +72,6 @@ async def locks(event):
             
 
 @bot.on(events.NewMessage(pattern=r"^.unlock ?(.*)", outgoing=True))
-@errors_handler
 async def rem_locks(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@",
                                                              "!"):
@@ -136,7 +133,7 @@ async def rem_locks(event):
             change_info=changeinfo,
         )
         try:
-            await bot(
+            unlocked = await bot(
                 functions.messages.EditChatDefaultBannedRightsRequest(peer=peer_id,
                                                                       banned_rights=unlock_rights)
             )
