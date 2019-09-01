@@ -66,9 +66,11 @@ async def locks(event):
             locked = await bot(
                 functions.messages.EditChatDefaultBannedRightsRequest(peer=peer_id,
                                                                       banned_rights=lock_rights))
-            await event.delete()
         except BaseException as e:
             await event.edit(f"`Do I have proper rights for that ??`\n{str(e)}")
+            return
+        else:
+            await event.delete()
             
 
 @bot.on(events.NewMessage(pattern=r"^.unlock ?(.*)", outgoing=True))
@@ -137,9 +139,11 @@ async def rem_locks(event):
                 functions.messages.EditChatDefaultBannedRightsRequest(peer=peer_id,
                                                                       banned_rights=unlock_rights)
             )
-            await event.delete()
         except BaseException as e:
             await event.edit(f"`Do I have proper rights for that ??`\n{str(e)}")
+            return
+        else:
+            await event.delete()
 
 
 CMD_HELP.update({
