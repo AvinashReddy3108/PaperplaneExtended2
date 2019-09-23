@@ -12,7 +12,7 @@ from userbot.events import register, errors_handler
 @register(outgoing=True, pattern="^.help(?: |$)(.*)")
 @errors_handler
 async def help(event):
-    """ For .help command,"""
+    """ For .help command, show list of available modules"""
     args = event.pattern_match.group(1).lower()
     if args:
         if args in CMD_HELP:
@@ -20,11 +20,11 @@ async def help(event):
         else:
             await event.edit("Please specify a valid module name.")
     else:
-        await event.edit("Please specify which module do you want help for !!\
-            \nSyntax: .help <module name>")
+        await event.edit("Please specify which module do you want help for!\
+            \nUsage:.help <module name>")
         string = ""
         for i in CMD_HELP:
-            string += "`" + str(i)
-            string += "`, "
+            string += "`"+str(i)
+            string += "`\n"
         string = string[:-2]
         await event.reply(string)
