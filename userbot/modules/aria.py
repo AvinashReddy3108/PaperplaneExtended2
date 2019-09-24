@@ -26,7 +26,7 @@ aria2 = aria2p.API(aria2p.Client(host="http://localhost", port=6800,
                                  secret=""))
 
 
-@register(outgoing=True, pattern="^.aria magnet(?: |$)(.*)")
+@register(outgoing=True, pattern="^.amag(?: |$)(.*)")
 @errors_handler
 async def magnet_download(event):
     magnet_uri = event.pattern_match.group(1)
@@ -44,7 +44,7 @@ async def magnet_download(event):
     await check_progress_for_dl(gid=new_gid, event=event, previous=None)
 
 
-@register(outgoing=True, pattern="^.aria tor(?: |$)(.*)")
+@register(outgoing=True, pattern="^.ator(?: |$)(.*)")
 @errors_handler
 async def torrent_download(event):
     torrent_file_path = event.pattern_match.group(1)
@@ -61,7 +61,7 @@ async def torrent_download(event):
     await check_progress_for_dl(gid=gid, event=event, previous=None)
 
 
-@register(outgoing=True, pattern="^.aria url(?: |$)(.*)")
+@register(outgoing=True, pattern="^.aurl(?: |$)(.*)")
 @errors_handler
 async def magnet_download(event):
     uri = [event.pattern_match.group(1)]
@@ -79,7 +79,7 @@ async def magnet_download(event):
         await progress_status(gid=new_gid, event=event, previous=None)
 
 
-@register(outgoing=True, pattern="^.aria clear(?: |$)(.*)")
+@register(outgoing=True, pattern="^.aclear(?: |$)(.*)")
 @errors_handler
 async def remove_all(event):
     try:
@@ -89,35 +89,35 @@ async def remove_all(event):
         pass
     if not removed:  # If API returns False Try to Remove Through System Call.
         system("aria2p remove-all")
-    await event.edit("`Clearing aria downloads....`")
+    await event.edit("`Clearing on-going downloads... `")
     await sleep(2.5)
-    await event.edit("`Removed`")
+    await event.edit("`Successfully cleared all downloads.`")
     await sleep(2.5)
 
 
-@register(outgoing=True, pattern="^.aria pause(?: |$)(.*)")
+@register(outgoing=True, pattern="^.apause(?: |$)(.*)")
 @errors_handler
 async def pause_all(event):
     # Pause ALL Currently Running Downloads.
     paused = aria2.pause_all(force=True)
-    await event.edit("`Pausing current aria downloads....`")
+    await event.edit("`Pausing downloads...`")
     await sleep(2.5)
-    await event.edit("`Paused`")
+    await event.edit("`Successfully paused on-going downloads.`")
     await sleep(2.5)
 
 
-@register(outgoing=True, pattern="^.aria resume(?: |$)(.*)")
+@register(outgoing=True, pattern="^.aresume(?: |$)(.*)")
 @errors_handler
 async def resume_all(event):
     resumed = aria2.resume_all()
-    await event.edit("`Resuming aria downloads....`")
+    await event.edit("`Resuming downloads...`")
     await sleep(1)
-    await event.edit("`Resumed`")
+    await event.edit("`Downloads resumed.`")
     await sleep(2.5)
     await event.delete()
 
 
-@register(outgoing=True, pattern="^.aria show(?: |$)(.*)")
+@register(outgoing=True, pattern="^.ashow(?: |$)(.*)")
 @errors_handler
 async def show_all(event):
     output = "output.txt"
@@ -131,11 +131,11 @@ async def show_all(event):
                         download.status) + "\nETA:  " + str(
                             download.eta_string()) + "\n\n"
     if len(msg) <= 4096:
-        await event.edit("`Current Downloads: `\n" + msg)
+        await event.edit("`On-going Downloads: `\n" + msg)
         await sleep(5)
         await event.delete()
     else:
-        await event.edit("`Output is huge. Sending as a file...`")
+        await event.edit("`Output is too big, sending it as a file...`")
         with open(output, 'w') as f:
             f.write(msg)
         await sleep(2)
@@ -198,12 +198,12 @@ async def check_progress_for_dl(gid, event, previous):
 
 CMD_HELP.update({
     "aria":
-    ".aria url <URL> (or) .aria magnet <magnet link> (or) .aria tor <path to torrent file>\
-    \nUsage: Downloads stuff into your userbot server storage.\
-    \n\n.aria pause (or) .aria resume\
-    \nUsage: Pauses/resumes unfinished downloads.\
-    \n\n.aria clear\
-    \nUsage: Clears the download queue, deleting all unfinished downloads.\
-    \n\n.aria show\
-    \nUsage: Shows progress of the ongoing downloads."
+    ".aurl [URL] (or) .amag [Magnet Link] (or) .ator [path to torrent file]\
+    \nUsage: Downloads the file into your userbot server storage.\
+    \n\n.apause (or) .aresume\
+    \nUsage: Pauses/resumes on-going downloads.\
+    \n\n.aclear\
+    \nUsage: Clears the download queue, deleting all on-going downloads.\
+    \n\n.ashow\
+    \nUsage: Shows progress of the on-going downloads."
 })
