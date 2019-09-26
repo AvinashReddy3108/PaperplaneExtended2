@@ -11,15 +11,17 @@ cmd = "aria2c \
 --enable-rpc \
 --rpc-listen-all=false \
 --rpc-listen-port 6800 \
+--max-concurrent-downloads=3 \
 --max-connection-per-server=10 \
 --rpc-max-request-size=1024M \
 --seed-time=0.01 \
 --min-split-size=10M \
 --follow-torrent=mem \
 --split=10 \
---daemon=true \
+--max-upload-limit=5K \
+--bt-tracker=udp://tracker.coppersurfer.tk:6969/announce,udp://tracker.leechers-paradise.org:6969/announce,udp://9.rarbg.to:2710/announce,udp://9.rarbg.me:2710/announce,udp://tracker.opentrackr.org:1337/announce,udp://tracker.openbittorrent.com:80/announce,udp://tracker.internetwarriors.net:1337/announce,udp://exodus.desync.com:6969/announce,udp://tracker.tiny-vps.com:6969/announce,udp://retracker.lanta-net.ru:2710/announce,udp://open.demonii.si:1337/announce,udp://tracker.torrent.eu.org:451/announce,udp://torrentclub.tech:6969/announce,udp://open.stealth.si:80/announce,udp://denis.stalker.upeer.me:6969/announce,udp://tracker.cyberia.is:6969/announce,udp://tracker.moeking.me:6969/announce,udp://tracker3.itzmx.com:6961/announce,udp://ipv4.tracker.harry.lu:80/announce,udp://opentor.org:2710/announce \
 --allow-overwrite=true \
---bt-tracker=[udp://tracker.coppersurfer.tk:6969/announce,udp://tracker.leechers-paradise.org:6969/announce,udp://9.rarbg.to:2710/announce,udp://9.rarbg.me:2710/announce,udp://tracker.opentrackr.org:1337/announce,udp://tracker.openbittorrent.com:80/announce,udp://tracker.internetwarriors.net:1337/announce,udp://exodus.desync.com:6969/announce,udp://tracker.tiny-vps.com:6969/announce,udp://retracker.lanta-net.ru:2710/announce,udp://open.demonii.si:1337/announce,udp://tracker.torrent.eu.org:451/announce,udp://torrentclub.tech:6969/announce,udp://open.stealth.si:80/announce,udp://denis.stalker.upeer.me:6969/announce,udp://tracker.cyberia.is:6969/announce,udp://tracker.moeking.me:6969/announce,udp://tracker3.itzmx.com:6961/announce,udp://ipv4.tracker.harry.lu:80/announce,udp://opentor.org:2710/announce]"
+--daemon=true"
 
 aria2_is_running = system(cmd)
 
