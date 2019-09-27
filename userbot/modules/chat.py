@@ -135,6 +135,25 @@ async def keep_read(message):
                 await message.client.send_read_acknowledge(message.chat_id)
 
 
+#Regex-Ninja module by @Kandnub
+@register(outgoing=True, pattern="^s/")
+ """For regex-ninja module, auto delete command starting with s/"""
+ async def sedNinja(event):
+     if regexNinja:
+         await event.delete()
+
+@register(outgoing=True, pattern="^.(enable|disable) regexninja$")
+ """For regex-ninja Enable/Disable, enable/disable the regex ninja module"""
+ async def sedNinjaToggle(event):
+     global regexNinja
+     if event.pattern_match.group(1) == "enable":
+         regexNinja = True
+         await event.edit("`Successfully enabled ninja mode for Regexbot.`")
+     else:
+         regexNinja = False
+         await event.edit("`Successfully disabled ninja mode for Regexbot.`")
+
+
 CMD_HELP.update({
     "chat":
     ".chatid\
