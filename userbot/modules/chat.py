@@ -169,5 +169,9 @@ CMD_HELP.update({
 \n\n.mutechat\
 \nUsage: Allows you to mute any chat.\
 \n\n.mention <reply/tag> <optional text>\
-\nUsage: Generate a permanent link to the user's profile with optional custom text."
+\nUsage: Generate a permanent link to the user's profile with optional custom text.\
+\n\n.regex-ninja\
+\nUsage: .enable regexninja Or .disable regexninja\
+\nenables or disables regex ninja module.\
+\nThis module auto deletes the regex triggering messages."
 })
