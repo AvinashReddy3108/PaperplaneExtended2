@@ -15,11 +15,16 @@ from traceback import format_exc
 
 from telethon import events
 
-from userbot import bot, BOTLOG_CHATID
+from userbot import bot, BOTLOG_CHATID, LOAD_PLUG
 
 
 def register(**args):
     """ Register a new event. """
+    import inspect
+    stack = inspect.stack()
+    previous_stack_frame = stack[1]
+    file_test = Path(previous_stack_frame.filename)
+    file_test = file_test.stem.replace(".py", "")
     pattern = args.get('pattern', None)
     disable_edited = args.get('disable_edited', False)
     ignore_unsafe = args.get('ignore_unsafe', False)
@@ -51,6 +56,11 @@ def register(**args):
             args['pattern'] = pattern.replace('^.', unsafe_pattern, 1)
 
     def decorator(func):
+        try:
+            LOAD_PLUG[file_test].append(func)
+        except:
+            LOAD_PLUG.update({file_test: []})
+            LOAD_PLUG[file_test].append(func)
         async def wrapper(check):
 
             if not trigger_on_fwd and check.fwd_from:
