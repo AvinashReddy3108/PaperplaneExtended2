@@ -25,6 +25,7 @@ except PhoneNumberInvalidError:
 
 for module_name in ALL_MODULES:
     imported_module = import_module("userbot.modules." + module_name)
+import_module("userbot.plug_core")
 
 LOGS.info("You are running Paperplane Extended [v5.0]")
 
