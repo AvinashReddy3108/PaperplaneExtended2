@@ -12,6 +12,7 @@ from asyncio import subprocess as asyncsub
 from os import remove
 from time import gmtime, strftime
 from traceback import format_exc
+from pathlib import Path
 
 from telethon import events
 
