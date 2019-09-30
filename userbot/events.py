@@ -60,8 +60,7 @@ def register(**args):
         try:
             LOAD_PLUG[file_test].append(func)
         except:
-            LOAD_PLUG.update({file_test: []})
-            LOAD_PLUG[file_test].append(func)
+            LOAD_PLUG[file_test] = [func]
         async def wrapper(check):
 
             if not trigger_on_fwd and check.fwd_from:
