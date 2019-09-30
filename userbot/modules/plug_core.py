@@ -30,8 +30,9 @@ async def load(event):
             pass
         import_module(f"userbot.modules.{shortname}")
         await event.edit(f"Successfully loaded {shortname}")
-    except Exception as e:
-        await event.edit(f"Could not load {shortname} because of the following error.\n{str(e)}")
+    except KeyError:
+        await event.edit(f"{shortname} does not exist in your modules")
+        raise KeyError("{} is not a module".format(shortname))
 
 def remove_plugin(shortname):
     for i in LOAD_PLUG[shortname]:
