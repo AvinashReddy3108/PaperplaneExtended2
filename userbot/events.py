@@ -15,7 +15,7 @@ from traceback import format_exc
 from pathlib import Path
 
 from telethon import events
-import stack
+import inspect
 
 from userbot import bot, BOTLOG_CHATID, LOAD_PLUG
 
