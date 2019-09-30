@@ -183,6 +183,7 @@ COUNT_MSG = 0
 USERS = {}
 COUNT_PM = {}
 LASTMSG = {}
+LOAD_PLUG = {}
 CMD_HELP = {}
 ISAFK = False
 AFKREASON = None
