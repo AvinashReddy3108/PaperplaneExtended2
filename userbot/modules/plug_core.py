@@ -15,8 +15,9 @@ async def unload(event):
     try:
         remove_plugin(shortname)
         await event.edit(f"Unloaded {shortname} successfully")
-    except Exception as e:
-        await event.edit("Could not unload {} due to the following error.\n{}".format(shortname, str(e)))
+    except KeyError:
+        await event.edit(f"{shortname} does not exist in your modules")
+        raise KeyError("{} is not a module".format(shortname))
 
 @register(pattern="^.load (?P<shortname>\w+)$", outgoing=True)
 async def load(event):
