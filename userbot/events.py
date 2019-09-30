@@ -15,13 +15,13 @@ from traceback import format_exc
 from pathlib import Path
 
 from telethon import events
+import stack
 
 from userbot import bot, BOTLOG_CHATID, LOAD_PLUG
 
 
 def register(**args):
     """ Register a new event. """
-    import inspect
     stack = inspect.stack()
     previous_stack_frame = stack[1]
     file_test = Path(previous_stack_frame.filename)
