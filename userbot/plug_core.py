@@ -1,8 +1,7 @@
 from userbot import bot, LOAD_PLUG
-from userbot.events import register, errors_handler
+from userbot.events import register
 
 @register(pattern="^.unload (?P<shortname>\w+)$", outgoing=True)
-@errors_handler
 async def unload(event):
     if event.fwd_from:
         return
@@ -13,7 +12,7 @@ async def unload(event):
     except Exception as e:
         await event.edit("Could not unload {} due to the following error.\n{}".format(shortname, str(e)))
 
-@command(pattern="^.load (?P<shortname>\w+)$", outgoing=True)
+@register(pattern="^.load (?P<shortname>\w+)$", outgoing=True)
 async def load(event):
     if event.fwd_from:
         return
