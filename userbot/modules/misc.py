@@ -80,7 +80,8 @@ async def bot_community(community):
     await community.edit(
         "Join RaphielGang's awesome userbot community: @userbot_support"
         "\nDo note that Paperplane Extended is an unoficial fork of their "
-        "Paperplane project and it may get limited or no support for bugs.")
+        "Paperplane project and it may get limited or no support for bugs."
+        "\nN.B. It is discontinued, due to internal conflicts")
 
 
 @register(outgoing=True, pattern="^.support$")
@@ -88,7 +89,8 @@ async def bot_support(wannahelp):
     """ For .support command, just returns the group link. """
     await wannahelp.edit(
         "Join the Paperplane Extended Channel: @PaperplaneExtended\
-        \nJoin the Paperplane Extended Chat: @PaperplaneExtendedSupport")
+        \nJoin the Paperplane Extended Chat: @PaperplaneExtendedSupport"
+        "N.B. It is being discontinued due to licensing issues")
 
 
 @register(outgoing=True, pattern="^.creator$")
