@@ -30,7 +30,8 @@ LOGS.info("You are running Paperplane Extended [v5.0]")
 
 LOGS.info(
     "Congratulations, your userbot is now running !! Test it by typing .alive in any chat."
-    "If you need assistance, head to https://t.me/PaperplaneExtendedChat")
+    "If you need assistance, head to https://t.me/PaperplaneExtendedChat"
+    "Warning: bot is now EOL. You can still get support, but there will not be major updates")
 
 if len(argv) not in (1, 3, 4):
     bot.disconnect()
