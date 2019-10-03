@@ -34,6 +34,7 @@ async def get_tz(con):
 
 
 @register(outgoing=True, pattern="^.weather(?: |$)(.*)")
+@errors_handler
 async def get_weather(weather):
     """ For .weather command, gets the current weather of a city. """
 
