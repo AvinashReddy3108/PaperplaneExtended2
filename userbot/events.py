@@ -15,7 +15,7 @@ from traceback import format_exc
 
 from telethon import events
 
-from userbot import bot, BOTLOG_CHATID
+from userbot import bot, BOTLOG_CHATID, LOGSPAMMER
 
 
 def register(**args):
@@ -52,6 +52,10 @@ def register(**args):
 
     def decorator(func):
         async def wrapper(check):
+            if not LOGSPAMMER:
+                send_to = check.chat_id
+            else:
+                send_to = BOTLOG_CHATID
 
             if not trigger_on_fwd and check.fwd_from:
                 return
@@ -123,11 +127,15 @@ def register(**args):
                     file.write(ftext)
                     file.close()
 
-                    await check.client.send_file(
-                        BOTLOG_CHATID,
-                        "error.log",
-                        caption=text,
-                    )
+                    if send_to == BOTLOG_CHATID:
+                        await check.respond(
+                            "`Sorry, my userbot encountered an error.\
+                        \nI have stored the report in the log group for investigation.`"
+                        )
+
+                    await check.client.send_file(send_to,
+                                                 "error.log",
+                                                 caption=text)
                     remove("error.log")
             else:
                 pass

@@ -11,7 +11,7 @@ from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP
 from userbot.events import register
 
 
-@register(incoming=True, disable_edited=True)
+@register(incoming=True, disable_edited=True, disable_errors=True)
 async def filter_incoming_handler(handler):
     """ Checks if the incoming message contains handler of a filter """
     try:
@@ -53,7 +53,7 @@ async def add_new_filter(new_handler):
         if BOTLOG_CHATID:
             await new_handler.client.send_message(
                 BOTLOG_CHATID, f"#FILTER\
-            \nCHAT: {new_handler.chat.title}\
+            \nCHAT ID: {new_handler.chat_id}\
             \nTRIGGER: {keyword}\
             \n\nThe following message is saved as the filter's reply data for the chat, please do NOT delete it !!"
             )

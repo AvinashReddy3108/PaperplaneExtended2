@@ -68,10 +68,3 @@ def remove_filter(chat_id, keyword):
         SESSION.delete(rem)
         SESSION.commit()
         return True
-
-
-def rm_all_filters(chat_id):
-    filters = SESSION.query(Filters).filter(Filters.chat_id == str(chat_id))
-    if filters:
-        filters.delete()
-        SESSION.commit()

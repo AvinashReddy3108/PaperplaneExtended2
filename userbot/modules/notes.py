@@ -29,7 +29,7 @@ async def notes_active(svd):
     await svd.edit(message)
 
 
-@register(outgoing=True, pattern=r"^.clear (.*)")
+@register(outgoing=True, pattern=r"^.clear (\w*)")
 async def remove_notes(clr):
     """ For .clear command, clear note with the given name."""
     try:
@@ -45,7 +45,7 @@ async def remove_notes(clr):
             "`Successfully deleted note:` **{}**".format(notename))
 
 
-@register(outgoing=True, pattern=r"^.save (.*)")
+@register(outgoing=True, pattern=r"^.save (\w*)")
 async def add_note(fltr):
     """ For .save command, saves notes in a chat. """
     try:
@@ -53,32 +53,42 @@ async def add_note(fltr):
     except AttributeError:
         await fltr.edit("`Running on Non-SQL mode!`")
         return
-    notename = fltr.pattern_match.group(1)
+    keyword = fltr.pattern_match.group(1)
+    string = fltr.text.partition(keyword)[2]
     msg = await fltr.get_reply_message()
-    if not msg:
-        await fltr.edit("`I need something to save as a note.`")
-    elif BOTLOG_CHATID:
-        await fltr.client.send_message(
-            BOTLOG_CHATID, f"#NOTE\
-        \nCHAT: {fltr.chat.title}\
-        \nKEYWORD: {notename}\
-        \nThe following message is saved as the note's reply data for the chat, please do NOT delete it !!"
-        )
-        msg_o = await fltr.client.forward_messages(entity=BOTLOG_CHATID,
-                                                   messages=msg,
-                                                   from_peer=fltr.chat_id,
-                                                   silent=True)
-    else:
-        await fltr.edit("`This feature requires the BOTLOG_CHATID to be set.`")
-        return
+    msg_id = None
+    if msg and msg.media and not string:
+        if BOTLOG_CHATID:
+            await fltr.client.send_message(
+                BOTLOG_CHATID, f"#NOTE\
+            \nCHAT ID: {fltr.chat_id}\
+            \nKEYWORD: {notename}\
+            \n\nThe following message is saved as the note's reply data for the chat, please do NOT delete it !!"
+            )
+            msg_o = await fltr.client.forward_messages(entity=BOTLOG_CHATID,
+                                                       messages=msg,
+                                                       from_peer=fltr.chat_id,
+                                                       silent=True)
+            msg_id = msg_o.id
+        else:
+            await fltr.edit(
+                "`Saving media as data for the note requires the BOTLOG_CHATID to be set.`"
+            )
+            return
+    elif fltr.reply_to_msg_id and not string:
+        rep_msg = await fltr.get_reply_message()
+        string = rep_msg.text
     success = "`Note {} successfully. Use` #{} `to get it`"
-    if add_note(str(fltr.chat_id), notename, msg_o.id) is False:
+    if add_note(str(fltr.chat_id), keyword, string, msg_o.id) is False:
         return await fltr.edit(success.format('updated', notename))
     else:
         return await fltr.edit(success.format('added', notename))
 
 
-@register(pattern=r"#\.*", disable_edited=True)
+@register(pattern=r"#\w*",
+          disable_edited=True,
+          disable_errors=True,
+          ignore_unsafe=True)
 async def incom_note(getnt):
     """ Notes logic. """
     try:
@@ -89,17 +99,14 @@ async def incom_note(getnt):
                 return
             notename = getnt.text[1:]
             note = get_note(getnt.chat_id, notename)
-            if note:
+
+            if note and note.f_mesg_id:
                 msg_o = await getnt.client.get_messages(entity=BOTLOG_CHATID,
                                                         ids=int(
                                                             note.f_mesg_id))
-                message_id_to_reply = getnt.message.reply_to_msg_id
-                if not message_id_to_reply:
-                    message_id_to_reply = None
-                await getnt.client.send_message(getnt.chat_id,
-                                                msg_o.message,
-                                                reply_to=message_id_to_reply,
-                                                file=msg_o.media)
+                await getnt.reply(msg_o.message, file=msg_o.media)
+            elif note:
+                await getnt.reply(note.reply)
     except AttributeError:
         pass
 

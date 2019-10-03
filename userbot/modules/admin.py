@@ -406,7 +406,7 @@ async def unmoot(unmot):
                 f"CHAT: {unmot.chat.title}(`{unmot.chat_id}`)")
 
 
-@register(incoming=True)
+@register(incoming=True, disable_edited=True)
 async def muter(moot):
     """ Used for deleting the messages of muted people """
     try:
@@ -796,17 +796,23 @@ async def get_users(show):
 
 async def get_user_from_event(event):
     """ Get the user from argument or replied message. """
-    args = event.pattern_match.group(1).split(' ', 1)
+    args = event.pattern_match.group(1).split(':', 1)
     extra = None
-    user_obj = None
-
-    if len(args[0]) > 0:
+    if event.reply_to_msg_id and not len(args) == 2:
+        previous_message = await event.get_reply_message()
+        user_obj = await event.client.get_entity(previous_message.from_id)
+        extra = event.pattern_match.group(1)
+    elif len(args[0]) > 0:
         user = args[0]
         if len(args) == 2:
             extra = args[1]
 
-        if user.isnumeric() and len(user) > 6:
+        if user.isnumeric():
             user = int(user)
+
+        if not user:
+            await event.edit("`Pass the user's username, id or reply!`")
+            return
 
         if event.message.entities is not None:
             probable_user_mention_entity = event.message.entities[0]
@@ -818,18 +824,9 @@ async def get_user_from_event(event):
                 return user_obj
         try:
             user_obj = await event.client.get_entity(user)
-        except (TypeError, ValueError):
-            user_obj = None
-            pass
-
-    elif event.reply_to_msg_id and not user_obj:
-        previous_message = await event.get_reply_message()
-        user_obj = await event.client.get_entity(previous_message.from_id)
-        extra = event.pattern_match.group(1)
-
-    else:
-        await event.edit("`Pass the user's username, id or reply!`")
-        return
+        except (TypeError, ValueError) as err:
+            await event.edit(str(err))
+            return None
 
     return user_obj, extra
 
@@ -849,19 +846,19 @@ async def get_user_from_id(user, event):
 
 CMD_HELP.update({
     "admin":
-    ".promote <username/userid>|<custom rank (optional)> (or) reply to a message with .promote <rank (optional)>\
+    ".promote <username/userid> : <custom rank (optional)> (or) reply to a message with .promote <rank (optional)>\
 \nUsage: Provides admin rights to the person in the chat.\
 \n\n.demote <username/userid> (or) reply to a message with .demote\
 \nUsage: Revokes the person's admin permissions in the chat.\
-\n\n.ban <username/userid>|<reason (optional)> (or) reply to a message with .ban <reason (optional)>\
+\n\n.ban <username/userid> : <reason (optional)> (or) reply to a message with .ban <reason (optional)>\
 \nUsage: Bans the person off your chat.\
 \n\n.unban <username/userid> (or) reply to a message with .unban\
 \nUsage: Removes the ban from the person in the chat.\
-\n\n.mute <username/userid>|<reason (optional)> reply to a message with .mute <reason (optional)>\
+\n\n.mute <username/userid> : <reason (optional)> reply to a message with .mute <reason (optional)>\
 \nUsage: Mutes the person in the chat, works on admins too.\
 \n\n.unmute <username/userid> (or) reply to a message with .unmute\
 \nUsage: Removes the person from the muted list.\
-\n\n.gmute <username/userid>|<reason (optional)> (or) reply to a message with .gmute <reason (optional)>\
+\n\n.gmute <username/userid> : <reason (optional)> (or) reply to a message with .gmute <reason (optional)>\
 \nUsage: Mutes the person in all groups you have in common with them.\
 \n\n.ungmute <username/userid> (or) reply to a message with .ungmute\
 \nUsage: Removes the person from the global mute list.\

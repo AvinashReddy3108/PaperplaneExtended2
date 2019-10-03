@@ -112,7 +112,7 @@ async def mute_chat(mute_e):
             str(mute_e.chat_id) + " was silenced.")
 
 
-@register(incoming=True)
+@register(incoming=True, disable_errors=True)
 async def keep_read(message):
     """ The mute logic. """
     try:
@@ -168,7 +168,7 @@ CMD_HELP.update({
 \nUsage: Unmutes a muted chat.\
 \n\n.mutechat\
 \nUsage: Allows you to mute any chat.\
-\n\n.link <username/userid>|<optional text> (or) reply to someone's message with .link <optional text>\
+\n\n.link <username/userid> : <optional text> (or) reply to someone's message with .link <optional text>\
 \nUsage: Generate a permanent link to the user's profile with optional custom text.\
 \n\n.regexninja on/off\
 \nUsage: Globally enable/disables the regex ninja module.\

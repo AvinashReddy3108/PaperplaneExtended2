@@ -3,11 +3,6 @@
 # Licensed under the Raphielscape Public License, Version 1.c (the "License");
 # you may not use this file except in compliance with the License.
 
-# The entire code given below is verbatim copied from
-# https://github.com/cyberboysumanjay/Gdrivedownloader/blob/master/gdrive_upload.py
-# there might be some changes made to suit the needs for this repository
-# Licensed under MIT License.
-
 import asyncio
 import math
 import os
@@ -149,7 +144,8 @@ async def gdrive_upload_function(dryb):
         # Sometimes API fails to retrieve starting URI, we wrap it.
         try:
             g_drive_link = await upload_file(http, required_file_name,
-                                             file_name, mime_type, dryb)
+                                             file_name, mime_type, dryb,
+                                             parent_id)
             await dryb.edit(
                 f"File:`{required_file_name}`\nwas Successfully Uploaded to [Google Drive]({g_drive_link})!"
             )
@@ -294,7 +290,7 @@ def authorize(token_file, storage):
     return http
 
 
-async def upload_file(http, file_path, file_name, mime_type, event):
+async def upload_file(http, file_path, file_name, mime_type, event, parent_id):
     # Create Google Drive service instance
     drive_service = build("drive", "v2", http=http, cache_discovery=False)
     # File body description
@@ -385,7 +381,8 @@ async def DoTeskWithDir(http, input_directory, event, parent_id):
             file_name, mime_type = file_ops(current_file_name)
             # current_file_name will have the full path
             g_drive_link = await upload_file(http, current_file_name,
-                                             file_name, mime_type, event)
+                                             file_name, mime_type, event,
+                                             parent_id)
             r_p_id = parent_id
     # TODO: there is a #bug here :(
     return r_p_id

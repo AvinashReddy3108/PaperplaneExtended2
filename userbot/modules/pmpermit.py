@@ -24,7 +24,7 @@ UNAPPROVED_MSG = (
 # =================================================================
 
 
-@register(incoming=True, disable_edited=True)
+@register(incoming=True, disable_edited=True, disable_errors=True)
 async def permitpm(event):
     """ Prohibits people from PMing you without approval. \
         Will block retarded nibbas automatically. """
@@ -99,9 +99,11 @@ async def permitpm(event):
                         )
 
 
-@register(disable_edited=True, outgoing=True)
+@register(disable_edited=True, outgoing=True, disable_errors=True)
 async def auto_accept(event):
     """ Will approve automatically if you texted them first. """
+    if not PM_AUTO_BAN:
+        return
     self_user = await event.client.get_me()
     if event.is_private and event.chat_id != 777000 and event.chat_id != self_user.id and not (
             await event.get_sender()).bot:
@@ -138,6 +140,7 @@ async def notifoff(noff_event):
     try:
         from userbot.modules.sql_helper.globals import addgvar
     except AttributeError:
+        await noff_event.edit("`Running on Non-SQL mode!`")
         return
     addgvar("NOTIF_OFF", True)
     await noff_event.edit("`Notifications from unapproved PM's are silenced!`")
@@ -149,6 +152,7 @@ async def notifon(non_event):
     try:
         from userbot.modules.sql_helper.globals import delgvar
     except AttributeError:
+        await non_event.edit("`Running on Non-SQL mode!`")
         return
     delgvar("NOTIF_OFF")
     await non_event.edit("`Notifications from unapproved PM's unmuted!`")
