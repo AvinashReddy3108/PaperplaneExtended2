@@ -62,7 +62,7 @@ async def add_note(fltr):
             await fltr.client.send_message(
                 BOTLOG_CHATID, f"#NOTE\
             \nCHAT ID: {fltr.chat_id}\
-            \nKEYWORD: {notename}\
+            \nKEYWORD: {keyword}\
             \n\nThe following message is saved as the note's reply data for the chat, please do NOT delete it !!"
             )
             msg_o = await fltr.client.forward_messages(entity=BOTLOG_CHATID,

@@ -90,7 +90,7 @@ async def save_welcome(event):
         if BOTLOG_CHATID:
             await event.client.send_message(
                 BOTLOG_CHATID, f"#WELCOME_NOTE\
-            \nCHAT: {event.chat_id}\
+            \nCHAT ID: {event.chat_id}\
             \nThe following message is saved as the new welcome note for the chat, please do NOT delete it !!"
             )
             msg_o = await event.client.forward_messages(
@@ -122,18 +122,19 @@ async def show_welcome(event):
         await event.edit("`Running on Non-SQL mode!`")
         return
     cws = get_current_welcome_settings(event.chat_id)
-    if cws and cws.f_mesg_id:
+    if not cws:
+        await event.edit("`No welcome message saved here.`")
+        return
+    elif cws and cws.f_mesg_id:
         msg_o = await event.client.get_messages(entity=BOTLOG_CHATID,
                                                 ids=int(cws.f_mesg_id))
         await event.edit(
             "`I am currently welcoming new users with this welcome note.`")
         await event.reply(msg_o.message, file=msg_o.media)
-    elif cws.reply:
+    elif cws and cws.reply:
         await event.edit(
             "`I am currently welcoming new users with this welcome note.`")
         await event.reply(cws.reply)
-    else:
-        await event.edit("`No welcome message saved here.`")
 
 
 @register(outgoing=True, pattern="^.rmwelcome$")
