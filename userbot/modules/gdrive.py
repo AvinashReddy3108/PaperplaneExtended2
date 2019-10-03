@@ -118,8 +118,9 @@ async def gdrive_upload_function(dryb):
             downloaded_file_name = await dryb.client.download_media(
                 await dryb.get_reply_message(),
                 TEMP_DOWNLOAD_DIRECTORY,
-                progress_callback=lambda d, t: asyncio.get_event_loop(
-                ).create_task(progress(d, t, dryb, c_time, "Downloading...")))
+                progress_callback=lambda d, t: asyncio.
+                get_event_loop().create_task(await progress(
+                    d, t, dryb, c_time, "Downloading...")))
         except Exception as e:
             await dryb.edit(str(e))
         else:

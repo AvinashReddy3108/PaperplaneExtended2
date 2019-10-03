@@ -145,9 +145,9 @@ async def download(target_file):
             downloaded_file_name = await target_file.client.download_media(
                 await target_file.get_reply_message(),
                 TEMP_DOWNLOAD_DIRECTORY,
-                progress_callback=lambda d, t: asyncio.get_event_loop(
-                ).create_task(
-                    progress(d, t, target_file, c_time, "Downloading...")))
+                progress_callback=lambda d, t: asyncio.
+                get_event_loop().create_task(await progress(
+                    d, t, target_file, c_time, "Downloading...")))
         except Exception as e:  # pylint:disable=C0103,W0703
             await target_file.edit(str(e))
         else:
@@ -189,9 +189,9 @@ async def uploadir(udir_event):
                         allow_cache=False,
                         reply_to=udir_event.message.id,
                         progress_callback=lambda d, t: asyncio.get_event_loop(
-                        ).create_task(
-                            progress(d, t, udir_event, c_time, "Uploading...",
-                                     single_file)))
+                        ).create_task(await
+                                      progress(d, t, udir_event, c_time,
+                                               "Uploading...", single_file)))
                 else:
                     thumb_image = os.path.join(input_str, "thumb.jpg")
                     c_time = time.time()
@@ -223,9 +223,9 @@ async def uploadir(udir_event):
                             )
                         ],
                         progress_callback=lambda d, t: asyncio.get_event_loop(
-                        ).create_task(
-                            progress(d, t, udir_event, c_time, "Uploading...",
-                                     single_file)))
+                        ).create_task(await
+                                      progress(d, t, udir_event, c_time,
+                                               "Uploading...", single_file)))
                 os.remove(single_file)
                 uploaded = uploaded + 1
         await udir_event.edit(
@@ -250,9 +250,9 @@ async def upload(u_event):
             force_document=True,
             allow_cache=False,
             reply_to=u_event.message.id,
-            progress_callback=lambda d, t: asyncio.get_event_loop(
-            ).create_task(
-                progress(d, t, u_event, c_time, "Uploading...", input_str)))
+            progress_callback=lambda d, t: asyncio.
+            get_event_loop().create_task(await progress(
+                d, t, u_event, c_time, "Uploading...", input_str)))
         await u_event.edit("Uploaded successfully !!")
     else:
         await u_event.edit("404: File Not Found")
@@ -366,10 +366,9 @@ async def uploadas(uas_event):
                             supports_streaming=True,
                         )
                     ],
-                    progress_callback=lambda d, t: asyncio.get_event_loop(
-                    ).create_task(
-                        progress(d, t, uas_event, c_time, "Uploading...",
-                                 file_name)))
+                    progress_callback=lambda d, t: asyncio.
+                    get_event_loop().create_task(await progress(
+                        d, t, uas_event, c_time, "Uploading...", file_name)))
             elif round_message:
                 c_time = time.time()
                 await uas_event.client.send_file(
@@ -388,10 +387,9 @@ async def uploadas(uas_event):
                             supports_streaming=True,
                         )
                     ],
-                    progress_callback=lambda d, t: asyncio.get_event_loop(
-                    ).create_task(
-                        progress(d, t, uas_event, c_time, "Uploading...",
-                                 file_name)))
+                    progress_callback=lambda d, t: asyncio.
+                    get_event_loop().create_task(await progress(
+                        d, t, uas_event, c_time, "Uploading...", file_name)))
             elif spam_big_messages:
                 await uas_event.edit("TBD: Not (yet) Implemented")
                 return
