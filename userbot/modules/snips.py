@@ -63,9 +63,9 @@ async def on_snip_save(event):
         string = rep_msg.text
     success = "`Snip {} successfully. Use` **${}** `anywhere to get it`"
     if add_snip(keyword, string, msg_id) is False:
-        await event.edit(success.format('updated', name))
+        await event.edit(success.format('updated', keyword))
     else:
-        await event.edit(success.format('saved', name))
+        await event.edit(success.format('saved', keyword))
 
 
 @register(outgoing=True, pattern="^.snips$")
