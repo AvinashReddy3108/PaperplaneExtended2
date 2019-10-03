@@ -62,7 +62,7 @@ async def on_snip_save(event):
         rep_msg = await fltr.get_reply_message()
         string = rep_msg.text
     success = "`Snip {} successfully. Use` **${}** `anywhere to get it`"
-    if add_snip(keyword, string, msg_o.id) is False:
+    if add_snip(keyword, string, msg_id) is False:
         await event.edit(success.format('updated', name))
     else:
         await event.edit(success.format('saved', name))
