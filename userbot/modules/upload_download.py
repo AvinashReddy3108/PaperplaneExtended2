@@ -189,9 +189,9 @@ async def uploadir(udir_event):
                         allow_cache=False,
                         reply_to=udir_event.message.id,
                         progress_callback=lambda d, t: asyncio.get_event_loop(
-                        ).create_task(await
-                                      progress(d, t, udir_event, c_time,
-                                               "Uploading...", single_file)))
+                        ).create_task(
+                            progress(d, t, udir_event, c_time, "Uploading...",
+                                     single_file)))
                 else:
                     thumb_image = os.path.join(input_str, "thumb.jpg")
                     c_time = time.time()
