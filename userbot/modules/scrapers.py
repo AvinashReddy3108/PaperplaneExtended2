@@ -659,8 +659,9 @@ async def download_video(v_url):
                                        performer=str(rip_data['uploader']))
             ],
             progress_callback=lambda d, t: asyncio.get_event_loop(
-            ).create_task(await progress(d, t, v_url, c_time, "Uploading..",
-                                         f"{rip_data['title']}.mp3")))
+            ).create_task(
+                progress(d, t, v_url, c_time, "Uploading..",
+                         f"{rip_data['title']}.mp3")))
         os.remove(f"{rip_data['id']}.mp3")
         await v_url.delete()
     elif video:
@@ -673,8 +674,9 @@ async def download_video(v_url):
             supports_streaming=True,
             caption=rip_data['title'],
             progress_callback=lambda d, t: asyncio.get_event_loop(
-            ).create_task(await progress(d, t, v_url, c_time, "Uploading..",
-                                         f"{rip_data['title']}.mp4")))
+            ).create_task(
+                progress(d, t, v_url, c_time, "Uploading..",
+                         f"{rip_data['title']}.mp4")))
         os.remove(f"{rip_data['id']}.mp4")
         await v_url.delete()
 
