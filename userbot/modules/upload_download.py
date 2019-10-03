@@ -223,9 +223,9 @@ async def uploadir(udir_event):
                             )
                         ],
                         progress_callback=lambda d, t: asyncio.get_event_loop(
-                        ).create_task(await
-                                      progress(d, t, udir_event, c_time,
-                                               "Uploading...", single_file)))
+                        ).create_task(
+                            progress(d, t, udir_event, c_time, "Uploading...",
+                                     single_file)))
                 os.remove(single_file)
                 uploaded = uploaded + 1
         await udir_event.edit(
