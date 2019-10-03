@@ -158,9 +158,6 @@ async def gdrive_upload_function(dryb):
 async def upload_dir_to_gdrive(event):
     await event.edit("Processing ...")
     if CLIENT_ID is None or CLIENT_SECRET is None:
-        await event.edit(
-            "This module requires credentials from https://da.gd/so63O. Aborting!"
-        )
         return
     input_str = event.pattern_match.group(1)
     if os.path.isdir(input_str):
@@ -188,9 +185,6 @@ async def upload_dir_to_gdrive(event):
 async def gdrive_search_list(event):
     await event.edit("Processing ...")
     if CLIENT_ID is None or CLIENT_SECRET is None:
-        await event.edit(
-            "This module requires credentials from https://da.gd/so63O. Aborting!"
-        )
         return
     input_str = event.pattern_match.group(1).strip()
     # TODO: remove redundant code

@@ -18,23 +18,26 @@ async def fastpurger(purg):
     """ For .purge command, purge all messages starting from the reply. """
     chat = await purg.get_input_chat()
     msgs = []
+    itermsg = purg.client.iter_messages(chat, min_id=purg.reply_to_msg_id)
     count = 0
 
-    async for msg in purg.client.iter_messages(chat,
-                                               min_id=purg.reply_to_msg_id):
-        msgs.append(msg)
-        count = count + 1
-        msgs.append(purg.reply_to_msg_id)
-        if len(msgs) == 100:
-            await purg.client.delete_messages(chat, msgs)
-            msgs = []
+    if purg.reply_to_msg_id is not None:
+        async for msg in itermsg:
+            msgs.append(msg)
+            count = count + 1
+            msgs.append(purg.reply_to_msg_id)
+            if len(msgs) == 100:
+                await purg.client.delete_messages(chat, msgs)
+                msgs = []
+    else:
+        await purg.edit("`No message specified.`", )
+        return
 
     if msgs:
         await purg.client.delete_messages(chat, msgs)
     done = await purg.client.send_message(
-        purg.chat_id,
-        "`Fast purge complete!\n`Purged " + str(count) + " messages.",
-    )
+        purg.chat_id, f"`Fast purge complete!\
+        \nPurged {str(count)} messages")
 
     if BOTLOG:
         await purg.client.send_message(

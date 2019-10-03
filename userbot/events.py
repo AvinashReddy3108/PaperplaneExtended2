@@ -98,9 +98,9 @@ def register(**args):
                     ftext += "\nyou may not report this error if you've"
                     ftext += "\nany confidential data here, no one will see your data\n"
                     ftext += "================================\n\n"
-                    ftext += "--------BEGIN USERBOT TRACEBACK LOG--------"
+                    ftext += "--------BEGIN USERBOT TRACEBACK LOG--------\n"
                     ftext += "\nDate: " + date
-                    ftext += "\nGroup ID: " + str(check.chat_id)
+                    ftext += "\nChat ID: " + str(check.chat_id)
                     ftext += "\nSender ID: " + str(check.sender_id)
                     ftext += "\n\nEvent Trigger:\n"
                     ftext += str(check.text)
@@ -110,9 +110,9 @@ def register(**args):
                     ftext += str(sys.exc_info()[1])
                     ftext += "\n\n--------END USERBOT TRACEBACK LOG--------"
 
-                    command = "git log --pretty=format:\"%an: %s\" -5"
+                    command = "git log --pretty=format:\"%an: %s\" -10"
 
-                    ftext += "\n\n\nLast 5 commits:\n"
+                    ftext += "\n\n\nLast 10 commits:\n"
 
                     process = await asyncsubshell(command,
                                                   stdout=asyncsub.PIPE,
@@ -126,12 +126,6 @@ def register(**args):
                     file = open("error.log", "w+")
                     file.write(ftext)
                     file.close()
-
-                    if send_to == BOTLOG_CHATID:
-                        await check.respond(
-                            "`Sorry, my userbot encountered an error.\
-                        \nI have stored the report in the log group for investigation.`"
-                        )
 
                     await check.client.send_file(send_to,
                                                  "error.log",
