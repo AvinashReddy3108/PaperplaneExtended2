@@ -13,10 +13,13 @@ from userbot import CMD_HELP, WEATHER_DEFCITY
 from userbot.events import register
 
 # ===== CONSTANT =====
-DEFCITY = WEATHER_DEFCITY if WEATHER_DEFCITY else None
-
-
+if WEATHER_DEFCITY:
+    DEFCITY = WEATHER_DEFCITY
+else:
+    DEFCITY = None
 # ====================
+
+
 async def get_tz(con):
     """ Get time zone of the given country. """
     """ Credits: @aragon12 and @zakaryan2004. """
@@ -45,8 +48,9 @@ async def get_weather(weather):
     if not weather.pattern_match.group(1):
         CITY = DEFCITY
         if not CITY:
-            await weather.edit("`Please specify a city or set one as default.`"
-                               )
+            await weather.edit(
+                "`Please specify a city or set one as default using the WEATHER_DEFCITY config variable.`"
+            )
             return
     else:
         CITY = weather.pattern_match.group(1)
@@ -70,7 +74,7 @@ async def get_weather(weather):
             CITY = newcity[0].strip() + "," + countrycode.strip()
 
     url = f'https://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={APPID}'
-    request = requests.get(url)
+    request = get(url)
     result = json.loads(request.text)
 
     if request.status_code != 200:
@@ -130,7 +134,5 @@ async def get_weather(weather):
 CMD_HELP.update({
     "weather":
     ".weather <city> or .weather <city>, <country name/code>\
-    \nUsage: Gets the weather of a city.\n\
-    \n.setcity <city> or .setcity <city>, <country name/code>\
-    \nUsage: Sets your default city so you can just use .weather"
+    \nUsage: Gets the weather of a city."
 })
