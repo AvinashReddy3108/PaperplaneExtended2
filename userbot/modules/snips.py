@@ -36,8 +36,8 @@ async def on_snip_save(event):
     except AtrributeError:
         await event.edit("`Running on Non-SQL mode!`")
         return
-    keyword = fltr.pattern_match.group(1)
-    string = fltr.text.partition(keyword)[2]
+    keyword = event.pattern_match.group(1)
+    string = event.text.partition(keyword)[2]
     msg = await event.get_reply_message()
     msg_id = None
     if msg and msg.media and not string:
@@ -59,7 +59,7 @@ async def on_snip_save(event):
             )
             return
     elif event.reply_to_msg_id and not string:
-        rep_msg = await fltr.get_reply_message()
+        rep_msg = await event.get_reply_message()
         string = rep_msg.text
     success = "`Snip {} successfully. Use` **${}** `anywhere to get it`"
     if add_snip(keyword, string, msg_id) is False:

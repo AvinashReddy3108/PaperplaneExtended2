@@ -31,7 +31,13 @@ async def capture(url):
         driver = webdriver.Chrome(executable_path=CHROME_DRIVER,
                                   options=chrome_options)
         input_str = url.pattern_match.group(1)
-        driver.get(input_str)
+        link_match = re.match(r'\bhttps?://.*\.\S+', input_str)
+        if link_match:
+            link = link_match.group()
+        else:
+            await url.edit("`I need a valid link to take screenshots from.`")
+            return
+        driver.get(link)
         height = driver.execute_script(
             "return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);"
         )
@@ -39,8 +45,12 @@ async def capture(url):
             "return Math.max(document.body.scrollWidth, document.body.offsetWidth, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth);"
         )
         driver.set_window_size(width + 125, height + 125)
-        await url.edit("`Generating screenshot of the page...`")
-        await sleep(10)
+        wait_for = height / 1000
+        await url.edit(f"`Generating screenshot of the page...`\
+        \n`Height of page = {height}px`\
+        \n`Width of page = {width}px`\
+        \n`Waiting ({int(wait_for)}s) for the page to load.`")
+        await sleep(int(wait_for))
         im_png = driver.get_screenshot_as_png()
         # saves screenshot of entire page
         driver.close()
@@ -63,5 +73,6 @@ async def capture(url):
 CMD_HELP.update({
     "ss":
     ".ss <url>\
-    \nUsage: Takes a screenshot of a website and sends the screenshot."
+    \nUsage: Takes a screenshot of a website and sends the screenshot.\
+    \nExample of a valid URL : `https://www.google.com`"
 })
