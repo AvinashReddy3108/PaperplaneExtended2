@@ -20,12 +20,20 @@ async def on_snip(event):
         return
     name = event.text[1:]
     snip = get_snip(name)
+    message_id_to_reply = event.message.reply_to_msg_id
+    if not message_id_to_reply:
+        message_id_to_reply = None
     if snip and snip.f_mesg_id:
         msg_o = await event.client.get_messages(entity=BOTLOG_CHATID,
                                                 ids=int(snip.f_mesg_id))
-        await event.reply(msg_o.message, file=msg_o.media)
-    elif snip:
-        await event.reply(snip.reply)
+        await event.client.send_message(event.chat_id,
+                                        msg_o.message,
+                                        reply_to=message_id_to_reply,
+                                        file=msg_o.media)
+    elif snip and snip.reply:
+        await event.client.send_message(event.chat_id,
+                                        note.reply,
+                                        reply_to=message_id_to_reply)
 
 
 @register(outgoing=True, pattern="^.snip (\w*)")

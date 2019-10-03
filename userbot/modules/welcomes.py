@@ -56,7 +56,7 @@ async def welcome_to_chat(event):
                                                         ids=int(cws.f_mesg_id))
                 file_media = msg_o.media
                 current_saved_welcome_message = msg_o.message
-            elif cws:
+            elif cws and cws.reply:
                 current_saved_welcome_message = cws.reply
             current_message = await event.reply(
                 current_saved_welcome_message.format(mention=mention,

@@ -99,21 +99,21 @@ async def incom_note(getnt):
                 return
             notename = getnt.text[1:]
             note = get_note(getnt.chat_id, notename)
-            message_id = None
-            if getnt.reply_to_msg_id:
-                message_id = url.reply_to_msg_id
+            message_id_to_reply = getnt.message.reply_to_msg_id
+            if not message_id_to_reply:
+                message_id_to_reply = None
             if note and note.f_mesg_id:
                 msg_o = await getnt.client.get_messages(entity=BOTLOG_CHATID,
                                                         ids=int(
                                                             note.f_mesg_id))
                 await getnt.client.send_message(getnt.chat_id,
                                                 msg_o.mesage,
-                                                reply_to=message_id,
+                                                reply_to=message_id_to_reply,
                                                 file=msg_o.media)
-            elif note:
+            elif note and note.reply:
                 await getnt.client.send_message(getnt.chat_id,
                                                 note.reply,
-                                                reply_to=message_id)
+                                                reply_to=message_id_to_reply)
     except AttributeError:
         pass
 
