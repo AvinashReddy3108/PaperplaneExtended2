@@ -10,6 +10,7 @@ from requests import get
 from datetime import datetime
 
 from userbot import CMD_HELP, WEATHER_DEFCITY
+from userbot import OPEN_WEATHER_MAP_APPID as OWM_API
 from userbot.events import register
 
 # ===== CONSTANT =====
