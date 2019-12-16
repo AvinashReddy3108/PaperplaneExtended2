@@ -35,7 +35,7 @@ async def repcf(event):
     except Exception as e:
         await event.edit(str(e))
 
-@register(outgoing=True, pattern="^.addcf$")
+@register(outgoing=True, pattern="^.forcelydia$")
 async def addcf(event):
     if event.fwd_from:
         return
@@ -52,7 +52,7 @@ async def addcf(event):
     else:
         await event.edit("Reply to a user to activate Lydia AI on them")
 
-@register(outgoing=True, pattern="^.remcf$")
+@register(outgoing=True, pattern="^.dislydia$")
 async def remcf(event):
     if event.fwd_from:
         return
@@ -87,9 +87,9 @@ async def user(event):
     
 """CMD_HELP.update({
     "lydia":
-    ".addcf <username/reply>\
+    ".forcelydia <username/reply>\
 \nUsage: add's lydia auto chat request in the chat.\
-\n\n.remcf <username/reply>\
+\n\n.dislydia <username/reply>\
 \nUsage: remove's lydia auto chat request in the chat.\
 \n\n.repcf <username/reply>\
 \nUsage: starts lydia repling to perticular person in the chat."
