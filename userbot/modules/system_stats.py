@@ -123,10 +123,10 @@ async def pipcheck(pip):
 async def amireallyalive(alive):
     """ For .alive command, check if the bot is running.  """
     await alive.edit(
-                     "`Halo Semuanya.Ini Adalah Userbot Saya...` \n\n"
-                     f"Versi Telethon Yang Saya Gunakan:   `{version.__version__}` \n"
-                     f"Versi Python Yang Saya Gunakan:     `{python_version()}` \n"
-                     f"Nama Saya:                          `{DEFAULTUSER}`"
+                     "`Wasap Kimak.Ini Userbot Gue Ya Tod...` \n\n"
+                     f"Ini Telethon Ajg:    `{version.__version__}` \n"
+                     f"Ini Python Asu:      `{python_version()}` \n"
+                     f"Ini Nama Gue Gblk:   `{DEFAULTUSER}`"
                      )
 
 
