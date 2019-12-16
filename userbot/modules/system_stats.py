@@ -126,7 +126,7 @@ async def amireallyalive(alive):
                      "I'm Alive Master... \n\n"
                      f"Telethon        : `{version.__version__}` \n"
                      f"Python          : `{python_version()}` \n"
-                     f"Nickname        : `{DEFAULTUSER}"`
+                     f"Nickname        : `{DEFAULTUSER}`"
                      )
 
 
