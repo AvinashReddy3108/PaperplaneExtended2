@@ -118,7 +118,7 @@ async def upstream(ups):
     ups_rem.fetch(ac_br)
     repo.git.reset("--hard")
     if getenv("DYNO", False):
-        import heroku3
+        import heroku
         if not HEROKU_APIKEY:
             await ups.edit('`[HEROKU MEMEZ] Please set up the HEROKU_APIKEY variable to be able to update userbot.`')
             return
