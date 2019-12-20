@@ -955,6 +955,18 @@ async def moon(event):
         return
 
 
+@register(outgoing=True, pattern="^.monkey$")
+async def moon(event):
+    deq = deque(list("🙉🙊🙈🙉🙊🙈🙉🙊🙈"))
+    try:
+        for x in range(32):
+            await sleep(0.1)
+            await event.edit("".join(deq))
+            deq.rotate(1)
+    except BaseException:
+        return
+
+
 @register(outgoing=True, pattern="^.clock$")
 async def clock(event):
     deq = deque(list("🕙🕘🕗🕖🕕🕔🕓🕒🕑🕐🕛"))
@@ -1278,6 +1290,8 @@ CMD_HELP.update({
 \nUsage: Facepalm :P\
 \n\n.moon\
 \nUsage: kensar moon animation.\
+\n\n.monkey\
+\nUsage: kensar monkey animation.\
 \n\n.clock\
 \nUsage: kensar clock animation.\
 \n\n.hi\
