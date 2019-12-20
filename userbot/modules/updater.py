@@ -7,14 +7,19 @@
 This module updates the userbot based on Upstream revision
 """
 
-from os import remove, execl
+from os import remove, execle, path, makedirs, getenv
+from shutil import rmtree
+import asyncio
 import sys
 
 from git import Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
 
-from userbot import CMD_HELP, bot, HEROKU_MEMEZ, HEROKU_APIKEY, HEROKU_APPNAME
+from userbot import CMD_HELP, bot, HEROKU_APIKEY, HEROKU_APPNAME, UPSTREAM_REPO_URL
 from userbot.events import register
+
+requirements_path = path.join(
+    path.dirname(path.dirname(path.dirname(__file__))), 'requirements.txt')
 
 
 async def gen_chlog(repo, diff):
@@ -25,23 +30,34 @@ async def gen_chlog(repo, diff):
     return ch_log
 
 
-async def is_off_br(br):
-    off_br = ['master']
-    for k in off_br:
-        if k == br:
-            return 1
-    return
+async def initial_git(repo):
+    update = repo.create_remote('master', UPSTREAM_REPO_URL)
+    update.pull('master')
+
+
+async def update_requirements():
+    reqs = str(requirements_path)
+    try:
+        process = await asyncio.create_subprocess_shell(
+            ' '.join([sys.executable, "-m", "pip", "install", "-r", reqs]),
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE)
+        await process.communicate()
+        return process.returncode
+    except Exception as e:
+        return repr(e)
 
 
 @register(outgoing=True, pattern="^.update(?: |$)(.*)")
 async def upstream(ups):
     "For .update command, check if the bot is up to date, update if specified"
     await ups.edit("`Checking for updates, please wait....`")
-    conf = ups.pattern_match.group(1).lower()
-    off_repo = 'https://github.com/AvinashReddy3108/PaperplaneExtended.git'
+    conf = ups.pattern_match.group(1)
+    off_repo = UPSTREAM_REPO_URL
 
     try:
-        txt = "`Oops.. Updater cannot continue due to some problems occured`\n\n**LOGTRACE:**\n"
+        txt = "`Oops.. Updater cannot continue due to "
+        txt += "some problems occured`\n\n**LOGTRACE:**\n"
         repo = Repo()
     except NoSuchPathError as error:
         await ups.edit(f'{txt}\n`directory {error} is not found`')
@@ -51,21 +67,18 @@ async def upstream(ups):
         return
     except InvalidGitRepositoryError:
         repo = Repo.init()
-        await ups.edit(
-            "`Warning: Force-Syncing to the latest stable code from repo.`\
-            \nI may lose my downloaded files during this update."
-        )
         origin = repo.create_remote('upstream', off_repo)
         origin.fetch()
-        repo.create_head('sql-extended', origin.refs.master)
+        repo.create_head('master', origin.refs.master)
         repo.heads.master.checkout(True)
 
     ac_br = repo.active_branch.name
-    if not await is_off_br(ac_br):
+    if ac_br != 'master':
         await ups.edit(
-            f'**[UPDATER]:**` Looks like you are using your own custom branch ({ac_br}). \
-            in that case, Updater is unable to identify which branch is to be merged. \
-            please checkout to any official branch`')
+            f'**[UPDATER]:**` Looks like you are using your own custom branch ({ac_br}). '
+            'in that case, Updater is unable to identify '
+            'which branch is to be merged. '
+            'please checkout to any official branch`')
         return
 
     try:
@@ -75,16 +88,18 @@ async def upstream(ups):
 
     ups_rem = repo.remote('upstream')
     ups_rem.fetch(ac_br)
+    
     changelog = await gen_chlog(repo, f'HEAD..upstream/{ac_br}')
 
     if not changelog:
-        await ups.edit(f'\n`Your BOT is` **up-to-date** `with` **{ac_br}**\n')
+        await ups.edit(
+            f'\n`Your BOT is`  **up-to-date**  `with`  **{ac_br}**\n')
         return
 
     if conf != "now":
         changelog_str = f'**New UPDATE available for [{ac_br}]:\n\nCHANGELOG:**\n`{changelog}`'
         if len(changelog_str) > 4096:
-            await ups.edit("`Changelog is too big, sending it as a file.`")
+            await ups.edit("`Changelog is too big, view the file to see it.`")
             file = open("output.txt", "w+")
             file.write(changelog_str)
             file.close()
@@ -96,20 +111,59 @@ async def upstream(ups):
             remove("output.txt")
         else:
             await ups.edit(changelog_str)
-        await ups.respond(
-            "`do \".update now\" to update\nDon't if using Heroku`")
+        await ups.respond('`do \".update now\" to update`')
         return
 
     await ups.edit('`New update found, updating...`')
     ups_rem.fetch(ac_br)
-    await ups.edit('`Successfully Updated!\n'
-                   'Bot is restarting... Wait for a second!`')
-    await install_requirements()
-    await bot.disconnect()
-    # Spin a new instance of bot
-    execl(sys.executable, sys.executable, *sys.argv)
-    # Shut the existing one down
-    exit()
+    repo.git.reset("--hard")
+    if getenv("DYNO", False):
+        import heroku3
+        if not HEROKU_APIKEY:
+            await ups.edit('`[HEROKU MEMEZ] Please set up the HEROKU_APIKEY variable to be able to update userbot.`')
+            return
+        heroku = heroku3.from_key(HEROKU_APIKEY)
+        heroku_app = None
+        heroku_applications = heroku.apps()
+        if not HEROKU_APPNAME:
+            await ups.edit('`[HEROKU MEMEZ] Please set up the HEROKU_APPNAME variable to be able to update userbot.`')
+            return
+        for app in heroku_applications:
+            if app.name == str(HEROKU_APPNAME):
+                heroku_app = app
+                break
+            if heroku_app is None:
+                await ups.edit(f'{txt}\n`Invalid Heroku credentials for updating userbot dyno.`')
+                return
+            else:
+                for build in heroku_app.builds():
+                    if build.status == "pending":
+                        await ups.edit('`A userbot dyno build is in progress, please wait for it to finish.`')
+                        return
+            url = f"https://api:{HEROKU_APIKEY}@git.heroku.com/{heroku_app.name}.git"
+            if "heroku" in repo.remotes:
+                repo.remotes['heroku'].set_url(url)
+            else:
+                repo.create_remote('heroku', url)
+            heroku_app.enable_feature('runtime-dyno-metadata')
+            await ups.edit('`[HEROKU MEMEZ] Userbot dyno build in progress, please wait.`')
+            remote = repo.remotes['heroku']
+            try:
+                remote.push(refspec=f'{repo.active_branch.name}:master')
+            except GitCommandError as error:
+                await ups.edit(f'{txt}\n`Here is the error log:\n{error}`')
+                return
+            await ups.edit('`Successfully Updated!\n'
+                               'Bot is restarting... Wait for a second!`')
+    else:
+        reqs_upgrade = await update_requirements()
+        await ups.edit('`Successfully Updated!\n'
+                       'Bot is restarting... Wait for a second!`')
+        await ups.client.disconnect()
+        # Spin a new instance of bot
+        args = [sys.executable, "-m", "userbot"]
+        execle(sys.executable, *args, os.environ)
+        return
 
 
 CMD_HELP.update({
