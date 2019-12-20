@@ -74,7 +74,7 @@ HEROKU_APIKEY = os.environ.get("HEROKU_APIKEY", None)
 # Custom (forked) repo URL for updater.
 UPSTREAM_REPO_URL = os.environ.get(
     "UPSTREAM_REPO_URL",
-    "https://github.com/MuhamadFajarGaray/PaperplaneExtended.git")
+    "https://github.com/AvinashReddy3108/PaperplaneExtended.git")
 
 # Custom (forked) repo URL for updater.
 UPSTREAM_REPO_URL = os.environ.get("UPSTREAM_REPO_URL", "https://github.com/AvinashReddy3108/PaperplaneExtended.git")
