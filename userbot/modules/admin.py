@@ -130,7 +130,7 @@ async def promote(promt):
     user, rank = await get_user_from_event(promt)
     if not rank:
         # Just in case.
-        rank = "admeme"
+        rank = "RetardMEME"
     if user:
         pass
     else:
