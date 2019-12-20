@@ -126,7 +126,13 @@ async def amireallyalive(alive):
                      "`アルハムドゥリラ...` \n\n"
                      f"Telethon Version:   `{version.__version__}` \n"
                      f"Python:   `{python_version()}` \n"
-                     f"User:   `{DEFAULTUSER}`"
+                     f"User:   `{DEFAULTUSER}`\n\n"
+                     f"`
+_____ _       _   _    ____  
+|  ___/ \     | | / \  |  _ \ 
+| |_ / _ \ _  | |/ _ \ | |_) |
+|  _/ ___ \ |_| / ___ \|  _ < 
+|_|/_/   \_\___/_/   \_\_| \_\`"
                      )
 
 
